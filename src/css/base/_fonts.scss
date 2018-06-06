@@ -2,8 +2,8 @@
 // This file contains all @font-face declarations, if any.
 // -----------------------------------------------------------------------------
 @font-face {
-    src: url('../../fonts/Behdad-Regular.ttf');
-    font-family: behdad;
+    src: url('../fonts/Behdad-Regular.woff2');
+    font-family: 'behdad';
 }
 
 /*
@@ -16,5 +16,5 @@ This is for icon font
     font-family: 'Material Icons';
     font-style: normal;
     font-weight: 400;
-    src: local('Material Icons'), local('MaterialIcons-Regular'), url('../../fonts/material-icons.woff2') format('woff2');
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url('../fonts/material-icons.woff2') format('woff2');
 }

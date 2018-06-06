@@ -8,11 +8,7 @@
 
 /// Regular font family
 /// @type List
-$text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !default;
-
-/// Code (monospace) font family
-/// @type List
-$code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Monaco', monospace !default;
+$font-family: 'behdad' ,'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial';
 
 
 
@@ -37,6 +33,10 @@ $mid-grey: rgb(153, 153, 153) !default;
 /// Dark grey
 /// @type Color
 $dark-grey: rgb(68, 68, 68) !default;
+
+/// Button primary Color
+/// @type Color
+$button-primary-color: #e67e22 !default;
 
 
 
