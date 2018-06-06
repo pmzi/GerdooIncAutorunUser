@@ -1,3 +1,25 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the header of the site/application.
 // -----------------------------------------------------------------------------
+
+.header{
+    grid-area: 1 / 1 / 2 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(min-content, 1fr)) 100px repeat(4, minmax(min-content, 1fr));
+    grid-template-rows: 1fr;
+    z-index: 2;
+    .header__logo-cont{
+        grid-area: 1 / 5 / 2 / 6;
+        position: relative;
+        .header__logo{
+            width: 100%;
+            max-width: 100px;
+            height: auto;
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+    }
+}
