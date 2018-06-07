@@ -1,6 +1,6 @@
 const Model = require('./Model');
 
-class DVD extends Model{
+class GeneralInfo extends Model{
 
     /**
      * @constructor
@@ -8,9 +8,7 @@ class DVD extends Model{
 
     constructor(){
 
-        super();
-
-        this.dbName = 'DVDs';
+        this.dbName = 'GeneralInfo';
 
         this.loadDatabase();
 
@@ -18,4 +16,4 @@ class DVD extends Model{
 
 }
 
-module.exports = DVD;
+module.exports = GeneralInfo;
