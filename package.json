@@ -6,7 +6,7 @@
   "main": "src/js/app.js",
   "scripts": {
     "sass:compile": "node-sass src/css/main.scss src/css/main.css -w",
-    "forge:start":"electron-forge start",
+    "forge:start": "electron-forge start",
     "start": "npm-run-all --parallel forge:start sass:compile",
     "package": "electron-forge package",
     "make": "electron-forge make",
@@ -50,7 +50,8 @@
   },
   "dependencies": {
     "electron-compile": "^6.4.2",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "nedb": "^1.8.0"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",
