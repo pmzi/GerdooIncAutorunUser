@@ -67,6 +67,10 @@
 
         .item-wrapper__item-cat-cont-1{
 
+            height: 0px;
+            overflow-y: hidden;
+            transition-duration: 0.3s;
+
             background-color: #eee;
             padding-left: 4rem;
 
@@ -92,6 +96,10 @@
 
                             display: block!important;
 
+                        }
+
+                        & .list-wrapper__item-software .list-wrapper__item-content>i{
+                            opacity: 1!important;
                         }
 
                     }
@@ -129,6 +137,10 @@
 
                     .list-wrapper-item-software-cont{
 
+                        height: 0px;
+                        overflow-y: hidden;
+                        transition-duration: 0.3s;
+
                         display: flex;
                         flex-direction: column;
 
@@ -138,6 +150,8 @@
                             margin-bottom: 2.5px;
     
                             display: flex;
+
+                            flex-shrink: 0;
     
                             flex-basis: 2.8rem;
     
@@ -175,6 +189,12 @@
                                     width: 2rem;
                                     height: 2rem;
                                     background-size: 100% 100%;
+
+                                    opacity: 0;
+
+                                    transition-delay: 0.3s;
+
+                                    transition-duration: 0.3s;
         
                                 }
                     
