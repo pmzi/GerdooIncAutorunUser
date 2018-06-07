@@ -1,4 +1,15 @@
-.softwareCont{
+.software-wrapper{
     grid-area: 2 / 5 / 3 / -1;
     background-color: yellow;
+    
+    display: flex;
+    justify-content: center;
+    
+    .software-wrapper__info-wrapper{
+
+        background-color: red;
+        flex-grow: 1;
+
+    }
+
 }
