@@ -34,9 +34,9 @@ $mid-grey: rgb(153, 153, 153) !default;
 /// @type Color
 $dark-grey: rgb(68, 68, 68) !default;
 
-/// Button primary Color
+/// Primary color
 /// @type Color
-$button-primary-color: #e67e22 !default;
+$primary-color: #e67e22 !default;
 
 
 
@@ -68,4 +68,4 @@ $breakpoints: (
 /// @type String
 /// @example scss - When using a CDN
 ///   $base-url: 'http://cdn.example.com/assets/';
-$base-url: '/assets/' !default;
+$base-url: '../' !default;
