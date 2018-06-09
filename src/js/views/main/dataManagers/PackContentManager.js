@@ -65,7 +65,6 @@ class PackContentManager {
 
                 for (let singleCat of cats) {
                     // let's add cat's element
-
                     currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
                     <div class="list-wrapper__item-content" data-toggleable>
                       <i class="material-icons">

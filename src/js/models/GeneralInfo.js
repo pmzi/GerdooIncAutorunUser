@@ -8,6 +8,8 @@ class GeneralInfo extends Model{
 
     constructor(){
 
+        super();
+
         this.dbName = 'GeneralInfo';
 
         this.loadDatabase();
