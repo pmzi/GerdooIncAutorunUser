@@ -16,6 +16,29 @@ class GeneralInfo extends Model{
 
     }
 
+    /**
+     * Gets the spicific record
+     * @param {String} title
+     * @returns {Promise}
+     */
+
+     getSpecific(title){
+        return new Promise((resolve, reject)=>{
+
+            let returnLimit = {};
+            returnLimit[title] = 1;
+
+            this.db.findOne({},returnLimit,(error, result)=>{
+                if(error === null){
+                    resolve(result);
+                }else{
+                    reject(error);
+                }
+            })
+
+        });
+     }
+
 }
 
 module.exports = GeneralInfo;
