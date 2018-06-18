@@ -10,27 +10,7 @@ class GeneralInfoManager{
     
     constructor(){
 
-        this.info = null;
-
-        this.load().then(()=>{
-            
-            // init events
-
-        })
-
-    }
-
-    load(){
-
-        return new Promise(async(resolve, reject)=>{
-
-            let info = await generalInfo.fetchAll('_id', 1);
-
-            this.info = info;
-
-            resolve();
-
-        });
+        this.initStaticEvents();
 
     }
 
@@ -38,9 +18,9 @@ class GeneralInfoManager{
      * Initialize static events
      */
 
-    initStaticEvents(){
+    async initStaticEvents(){
 
-        //
+        
 
     }
 
