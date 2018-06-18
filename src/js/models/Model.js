@@ -14,11 +14,11 @@ class Model {
     }
 
     /**
-     * Fetches all the DVDs
+     * Fetches all
      * @returns {Promise} - Returnes data in resolve of the Promise
      */
 
-    fetchAll(sortProperty, sortType) {
+    fetchAll(sortProperty = "_id", sortType = 1) {
         let order = {};
 
         order[sortProperty] = sortType;
