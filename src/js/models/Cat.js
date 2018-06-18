@@ -20,7 +20,7 @@ class Cat extends Model{
      * 
      */
 
-    getTitlesByDVDNumber(DVDNumber) {
+    getCatsByDVDNumber(DVDNumber) {
         DVDNumber = parseInt(DVDNumber);
         return new Promise((resolve, reject) => {
             this.db.find({
@@ -36,6 +36,20 @@ class Cat extends Model{
             });
         });
     }
+
+    isProper(cat, toSearch){
+
+        let regexp = new RegExp(toSearch, 'i');
+
+        if(regexp.test(cat.tags)){
+            return true;
+        }else if(regexp.test(cat.title)){
+            return true;
+        }
+        
+        return false;
+
+    };
 
 }
 
