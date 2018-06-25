@@ -18,10 +18,12 @@ class PackContentManager {
     constructor() {
 
         // loads all the dvds, cats and softwares into the menu
-
+        
         this.load().then(() => {
 
-            console.log("Loaded")
+            
+
+            
 
         })
 
@@ -30,7 +32,7 @@ class PackContentManager {
     async load() {
 
         return new Promise(async (resolve, reject) => {
-
+            console.time("end");
             // let's empty the menu
 
             $('.list-wrapper').empty();
@@ -54,6 +56,9 @@ class PackContentManager {
                 <span>
                   Disk ${singleDVD.number}
                 </span>
+                <span>
+                    دیسک فعلی
+                </span>
               </div><div class="item-wrapper__item-cat-cont-1">
               <div class="item-wrapper__item-cat-cont-2">
                 
@@ -61,7 +66,7 @@ class PackContentManager {
 
                 let currDVDElem = $(`.list-wrapper > .list-wrapper__item-dvd[data-dvd-number='${singleDVD.number}'] .item-wrapper__item-cat-cont-2`);
 
-                let cats = await cat.getTitlesByDVDNumber(singleDVD.number);
+                let cats = await cat.getCatsByDVDNumber(singleDVD.number);
 
                 for (let singleCat of cats) {
                     // let's add cat's element
@@ -108,19 +113,19 @@ class PackContentManager {
             $('.list-wrapper').trigger('reload');
 
             this.initSoftwareEvents();
-
+            console.timeEnd("end");
             resolve();
 
         });
 
     }
 
-    async search(toSearch) {
+    async search(toSearch, OS = null) {
 
         return new Promise(async (resolve, reject) => {
 
-            
 
+            
         });
 
     }
@@ -161,6 +166,20 @@ class PackContentManager {
             }
         }
 
+
+    }
+
+    /**
+     * Shows software
+     */
+
+    showSoftware(id){
+
+        return new Promise((resolve, reject)=>{
+
+            
+
+        });
 
     }
 
