@@ -5,28 +5,31 @@
 .header{
 
     grid-area: 1 / 1 / 2 / -1;
-    display: grid;
-    grid-template-columns: repeat(4, [col-start] minmax(min-content, 1fr) [col-end]) [logo-start] 12rem [logo-end] repeat(4, [col-start] minmax(min-content, 1fr) [col-end]);
-    grid-template-rows: 1fr;
+    display: flex;
     z-index: 2;
-    align-items: center;
     padding: 0px 10px;
 
     .header__logo-cont{
 
-        grid-area: 1 / logo-start / 2 / logo-end;
-        align-self: stretch;
+        flex-basis: 20rem;
         position: relative;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
 
         // For logo
 
         .header__logo-wrapper{
 
+            align-self: stretch;
             position: absolute;
+            top: -1rem;
+            left: 0;
             height: 12rem;
             width: 12rem;
             background-color: white;
             border-radius: 50%;
+            z-index: 1;
 
             .header__logo{
 
@@ -37,16 +40,49 @@
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%);
+                transform: translate(-47%, -53%);
 
             }
+
         }
 
-        // Buttons
+        .header__disk-number-wrapper{
 
-        .header--button-1{
-            grid-area: 1 / col-start 1 / 2 / col-end 1;
+            height: 3.5rem;
+            width: 9rem;
+            background-color: $primary-color;
+            position: absolute;
+            right: 1rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 1.5rem;
+            border-radius: 0.5rem;
+
+
         }
         
     }
+
+    .header__right-side{
+        flex-direction: row-reverse;
+
+        &>button{
+            margin-left: 0.5rem;
+        }
+
+    }
+
+    .header__left-side,.header__right-side{
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+
+        &>button{
+            margin-right: 0.5rem;
+        }
+
+    }
+
 }

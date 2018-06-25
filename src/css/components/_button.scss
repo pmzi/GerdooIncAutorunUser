@@ -6,12 +6,45 @@
     color: white;
     border: none;
     cursor: pointer;
-    min-height: 40px;
-    border-radius: 5px;
-
+    min-height: 4rem;
+    border-radius: 0.5rem;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 
     &:focus{
         outline: none;
+    }
+
+    &.button--install{
+        flex-basis: 15rem;
+    }
+
+    &.button--info{
+        background-color: $secondary-color;
+    }
+
+    &.button--iconic{
+        padding: 0;
+        flex-basis: 4rem;
+
+        &>span{
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+    }
+
+    &>i{
+        width: 2.5rem;
+        line-height: 4rem;
+    }
+
+    &>span{
+        margin-right: 0.5rem;
     }
 
 }

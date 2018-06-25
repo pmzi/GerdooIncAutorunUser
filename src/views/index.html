@@ -19,15 +19,35 @@
 
     <header class="header pmd-z-depth-1">
 
+      <div class="header__left-side">
+        <button class="button--install button">
+          نصب اتوران
+        </button>
+        <button class="button button--iconic">
+          <i class="material-icons">
+            event
+          </i>
+        </button>
+        <button class="button button--iconic">
+          <span>En</span>
+        </button>
+      </div>
+
       <div class="header__logo-cont">
         <div class="header__logo-wrapper pmd-z-depth-2">
           <img class="header__logo" src="../images/logo.gif" alt="Gerdoo Logo">
         </div>
+        <div class="header__disk-number-wrapper">
+          Disk 3
+        </div>
       </div>
 
-      <button class="header--button-1 button">
-        نصب اتوران
-      </button>
+      <div class="header__right-side">
+        <button class="button button--info">
+          <i class="material-icons">info_outline</i>
+          <span>درباره گردو</span>
+        </button>
+      </div>
 
     </header>
 
@@ -142,11 +162,9 @@
   <script src="../js/helpers/elementHelper.js"></script>
 
   <script>
-  
-  require('../js/views/main/dataManagers/PackContentManager');
+    require('../js/views/main/dataManagers/PackContentManager');
 
-  require('../js/views/main/dataManagers/GeneralInfoManager');
-
+    require('../js/views/main/dataManagers/GeneralInfoManager');
   </script>
 
 </body>
