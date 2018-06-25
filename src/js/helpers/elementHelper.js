@@ -11,7 +11,11 @@ Element.prototype.empty = function(){
 }
 
 Element.prototype.append = function(html){
-    this.innerHTML += html;
+        var div = document.createElement('div');
+        div.innerHTML = html;
+        while (div.children.length > 0) {
+          this.appendChild(div.children[0]);
+        }
 }
 
 Element.prototype.trigger = function(eventName){
