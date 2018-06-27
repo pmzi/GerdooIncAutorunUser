@@ -38,6 +38,107 @@
 
     }
 
+    &.button--large{
+
+        width: 22rem;
+        height: 6rem;
+        font-size: 2.4rem;
+
+        &>i{
+            font-size: 3rem;
+        }
+        
+    }
+
+    &.button--slider{
+
+        padding: 0;
+        background-color: #e7e7e7;
+        color: black;
+
+        border-bottom: 0.3rem solid $primary-color;
+
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+
+        &>span{
+            width: 0;
+            opacity: 0;
+            margin: 0;
+
+            transition-duration: 0.3s;
+
+        }
+
+        &>i.active{
+
+            & + span{
+
+                width: calc(100% - 2*(4.5rem));
+
+                opacity: 1;
+
+                padding: 0 0 0 1rem;
+
+            }
+        }
+
+        &>i:not(.active){
+            color: white;
+            background-color: $primary-color;
+
+            & + span{
+                height: 0;
+            }
+
+        }
+
+        &>i{
+            box-sizing: content-box;
+            padding: 0 1rem 0 1rem;
+
+            transition-duration: 0.3s;
+
+        }
+
+    }
+
+    &.button--software{
+        background-color: transparent;
+
+        cursor: default;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &>i{
+
+            cursor: pointer;
+
+            background-color: $primary-color;
+            color: white;
+            width: 5rem;
+            height: 5rem;
+            line-height: 5rem;
+            text-align: center;
+            border-radius: 50%;
+
+        }
+
+        &>span{
+
+            text-align: center;
+
+            color: darken($primary-color, 30);
+
+            font-size: 1.4rem;
+            margin-top: 0.3rem;
+
+        }
+
+    }
+
     &>i{
         width: 2.5rem;
         line-height: 4rem;
