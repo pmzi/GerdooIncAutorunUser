@@ -23,6 +23,20 @@
     animation-iteration-count: 1;
 }
 
+.come-in{
+    animation-name: come-in;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.come-out{
+    animation-name: come-in;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
 @keyframes card-in {
     0% {
         transform: translateZ(-100rem) translateY(100vh);
@@ -49,4 +63,28 @@
         transform: translateZ(-100rem) translateY(100vh);
         opacity: 0;
     }
+}
+
+@keyframes come-in{
+
+    0%{
+        transform: translateX(-100%);
+    }
+
+    100%{
+        transform: translateX(0%);
+    }
+
+}
+
+@keyframes come-out{
+
+    0%{
+        transform: translateX(0%);
+    }
+
+    100%{
+        transform: translateX(-100%);
+    }
+
 }
