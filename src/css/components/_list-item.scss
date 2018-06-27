@@ -17,6 +17,8 @@
         &.current{
             background-image: linear-gradient(to right, whitesmoke, lighten($primary-color, 30));
 
+            order: -1;
+
             &>.list-wrapper__item-content{
 
                 &>span:last-of-type{
