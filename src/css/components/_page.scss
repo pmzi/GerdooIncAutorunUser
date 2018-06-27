@@ -1,0 +1,32 @@
+.page{
+    width: 90%;
+
+    background-color: white;
+
+    min-height: 20rem;
+
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+
+    direction: rtl;
+
+    text-align: center;
+
+    padding: 1rem;
+
+    &__title{
+
+        font-size: 1.8rem;
+        font-weight: normal;
+
+        margin-bottom: 0.5rem;
+
+    }
+
+    &__content{
+
+        line-height: 2.4rem;
+
+    }
+
+}
