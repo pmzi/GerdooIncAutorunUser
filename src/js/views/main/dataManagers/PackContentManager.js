@@ -95,9 +95,11 @@ class PackContentManager {
                     for (let singleSoftware of softwares) {
                         // let's add software's element
 
+                        let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
+
                         currCatElem.append(`<div data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
                         <div class="list-wrapper__item-content">
-                          <i></i>
+                          ${verifiedLogo}
                           <span>
                             ${singleSoftware.title}
                           </span>
@@ -126,7 +128,7 @@ class PackContentManager {
 
         return new Promise(async (resolve, reject) => {
 
-            
+
             
         });
 
