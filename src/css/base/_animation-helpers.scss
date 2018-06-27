@@ -1,0 +1,19 @@
+.fade-in{
+
+    transition-duration: 0.3s;
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+}
+
+.fade-out{
+    
+    transition-duration: 0.3s;
+
+    transform: translateY(90vh);
+
+    opacity: 0;
+
+}

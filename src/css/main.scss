@@ -12,7 +12,8 @@
   'base/fonts',
   'base/typography',
   'base/helpers',
-  'base/scrollbar';
+  'base/scrollbar',
+  'base/animation-helpers';
 
 // 4. Layout-related sections
 @import
@@ -26,7 +27,8 @@
 @import
   'components/button',
   'components/input',
-  'components/list-item';
+  'components/list-item',
+  'components/about-gerdoo';
 
 // 6. Page-specific styles
 @import
