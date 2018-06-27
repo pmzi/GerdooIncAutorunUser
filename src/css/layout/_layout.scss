@@ -6,7 +6,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: [header-start] 8rem [header-end main-start] 1fr [main-end footer-start] 4rem [footer-end];
+    grid-template-rows: [header-start] 8rem [header-end main-start] 1fr [main-end footer-start] 1.5rem [footer-end];
     height: 100%;
     position: absolute;
     top: 0px;
