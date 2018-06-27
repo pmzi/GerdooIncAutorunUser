@@ -1,15 +1,42 @@
 .software-wrapper{
     grid-area: 2 / 5 / 3 / -1;
-    background-color: yellow;
+    background-color: whitesmoke;
     
     display: flex;
     justify-content: center;
+    flex-direction: column;
+
+    position: relative;
     
-    .software-wrapper__info-wrapper{
-
-        background-color: red;
+    &__info-wrapper{
+        
         flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
 
+        overflow-y: scroll;
+
+        height: 0;
+
+        position: relative;
+
+        perspective: 100rem;
+
+    }
+
+    &__bottom-overlay{
+
+        position: absolute;
+        bottom: 0;
+        right: 1rem;
+
+        height: 4rem;
+        width: calc(100% - 1rem);
+
+        pointer-events: none;
+
+        background-image: linear-gradient(to bottom, transparent, white)
     }
 
 }
