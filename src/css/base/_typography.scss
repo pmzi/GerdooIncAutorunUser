@@ -5,3 +5,7 @@ body {
   color: $text-color;
   font: normal calc(100% / 0.625) $font-family;
 }
+
+.highlight{
+  color: $primary-color;
+}
