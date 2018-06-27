@@ -18,6 +18,8 @@ class PackContentManager {
     constructor() {
 
         // loads all the dvds, cats and softwares into the menu
+
+        this.initStaticEvents();
         
         this.load().then(() => {
 
@@ -124,7 +126,7 @@ class PackContentManager {
 
         return new Promise(async (resolve, reject) => {
 
-
+            
             
         });
 
@@ -169,6 +171,42 @@ class PackContentManager {
 
     }
 
+    initStaticEvents(){
+        // for the search box
+
+        let searchInterval;
+
+        $('.sidebar__header-searchbox-wrapper>.input__box').oninput = (e)=>{
+
+            if(searchInterval){
+                clearInterval(searchInterval);
+            }
+
+            let toSearch = $('.sidebar__header-searchbox-wrapper>.input__box').value;
+
+            toSearch = toSearch.trim();
+
+            if(toSearch === ''){
+                this.hideSearchDialog();
+                clearInterval(searchInterval)
+                return;
+            }
+            
+            if($('.list-wrapper--search').classList.contains('none')){
+                this.showSearchDialog();
+            }
+            
+            searchInterval = setInterval(()=>{
+
+                clearInterval(searchInterval)
+                
+                this.search(toSearch);
+
+            }, 1000);
+
+        };
+    }
+
     /**
      * Shows software
      */
@@ -181,6 +219,18 @@ class PackContentManager {
 
         });
 
+    }
+
+    showSearchDialog(){
+        $('.list-wrapper:not(.list-wrapper--search)').classList.add('none');
+        $('.list-wrapper--search').classList.remove('none');
+    }
+
+    hideSearchDialog(){
+        let searchDialog = $('.list-wrapper--search');
+        searchDialog.empty();
+        searchDialog.classList.add('none');
+        $('.list-wrapper:not(.list-wrapper--search)').classList.remove('none');
     }
 
 }
