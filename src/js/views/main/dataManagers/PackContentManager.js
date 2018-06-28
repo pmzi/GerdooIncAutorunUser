@@ -5,10 +5,10 @@ const GeneralInfo = require('../../../models/GeneralInfo');
 
 //
 
+const generalInfo = new GeneralInfo();
 const cat = new Cat();
 const software = new Software();
 const dvd = new DVD();
-const generalInfo = new GeneralInfo();
 
 //
 
@@ -19,19 +19,37 @@ const fs = require('fs');
 class PackContentManager {
     constructor() {
 
-        // loads all the dvds, cats and softwares into the menu
+        this.setCurrentDVD();
 
-        window.currentDVD = 3;
+        // after page loads
 
-        this.initStaticEvents();
+        document.addEventListener('DOMContentLoaded',()=>{
+
+            // let's show it with animation
+
+            $('.header__disk-number-wrapper').classList.add('come-out');
+
+        });
 
         // loads the general contents
+        if(generalInfo.loaded){
+            this.loadGeneralContents();
+        }else{
+            console.log("here1")
+            generalInfo.afterLoaded = ()=>{
+                console.log("here")
+                this.loadGeneralContents();
+            }
+        }
+        console.log(generalInfo.loaded)
 
-        this.loadGeneralContents();
+        this.initStaticEvents();       
 
         // loads the softwares
 
         this.load();
+
+        this.observeForDVDChange();
 
     }
 
@@ -458,7 +476,7 @@ class PackContentManager {
 
             console.log('1')
 
-            let generalContents = await generalInfo.get();
+            let generalContents = (await generalInfo.fetchAll("_id", 1))[0];
 
             // Loading the aboutUs
 
@@ -556,6 +574,69 @@ class PackContentManager {
         searchDialog.empty();
         searchDialog.classList.add('none');
         $('.list-wrapper:not(.list-wrapper--search)').classList.remove('none');
+    }
+
+    observeForDVDChange(){
+
+        setInterval(()=>{
+
+            if(this.getCurrentDVD() != window.currentDVD){
+                this.changeDVD();
+            }
+
+        },5000)
+
+    }
+
+    getCurrentDVD(){
+        let autorunFilePath = path.join(__dirname,'../../../../../../','autorun.ini');
+        if(fs.existsSync(autorunFilePath)){
+
+            // hiding the possible loading
+
+            Loading.hide();
+
+            return parseInt(fs.readFileSync(autorunFilePath, 'utf8'));
+
+
+        }else{// file doesn't exists, probably dvd is out!
+            
+            // let's show the loading
+
+            Loading.show();
+
+            return window.currentDVD;
+        }
+    }
+
+    changeDVD(){
+
+        $('.header__disk-number-wrapper').classList.remove('come-out');
+
+        this.setCurrentDVD();
+
+        setTimeout(()=>{
+            $('.header__disk-number-wrapper').classList.add('come-out');
+        },1000)
+
+        // Let's change the current dvd in software aside
+
+        $('.list-wrapper__item-dvd.current').classList.remove('current');
+
+        $(`.list-wrapper__item-dvd[data-dvd-number='${window.currentDVD}']`).classList.add('current');
+
+    }
+
+    setCurrentDVD(){
+
+        // let's catch the current dvd number
+
+        window.currentDVD = this.getCurrentDVD();
+
+        // let's change the dvd number text
+
+        $('.header__disk-number-wrapper').textContent = `Disk ${window.currentDVD}`;
+        
     }
 
 }
