@@ -158,11 +158,11 @@ class PackContentManager {
 
             let DVDs = await dvd.fetchAll("number", 1);
 
-            let cats = await cat.findClosest(toSearch);
+            let cats = await cat.findClosest(toSearch, OS);
 
             let catIDs = cats.map(cat => cat._id);
 
-            let softwares = await software.findClosest(toSearch, catIDs);
+            let softwares = await software.findClosest(toSearch, catIDs, OS);
 
             let searchWrapper = $('.list-wrapper.list-wrapper--search');
 
@@ -207,6 +207,16 @@ class PackContentManager {
 
                 for (let singleCat of insideCats) {
 
+                    let insideCatSoftwares = await software.getSoftwaresByCat(singleCat._id);
+
+                    if(OS){
+                        insideCatSoftwares = await insideCatSoftwares.filter(soft=>soft.oses.includes(OS));
+                    }
+
+                    if(insideCatSoftwares.length == 0){
+                        continue;
+                    }
+
                     currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
                         <div class="list-wrapper__item-content" data-toggleable>
                         <i class="material-icons">
@@ -225,9 +235,8 @@ class PackContentManager {
 
                     let currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleCat._id}']>.list-wrapper-item-software-cont`);
 
-                    let insideCatSoftwares = await software.getSoftwaresByCat(singleCat._id);
-
                     for (let singleSoftware of insideCatSoftwares) {
+
                         // let's add software's element
 
                         let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
@@ -253,9 +262,8 @@ class PackContentManager {
                     let currCatElem;
 
                     if (usedCatIDs.includes(singleSoftware.cat)) {
-                        currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${software.cat}']>.list-wrapper-item-software-cont`);
+                        currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleSoftware.cat}']>.list-wrapper-item-software-cont`);
                     } else {
-
                         let singleCat = await cat.getById(singleSoftware.cat)
 
                         currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
@@ -290,6 +298,11 @@ class PackContentManager {
                         </div>
                         </div>`);
 
+                }
+
+                // remove the dvd if it is empty
+                if(currDVDElem.querySelector('.list-wrapper__item-cat') == null){
+                    $(`.list-wrapper.list-wrapper--search [data-dvd-number='${singleDVD.number}']`).parentNode.removeChild($(`.list-wrapper.list-wrapper--search [data-dvd-number='${singleDVD.number}']`));
                 }
 
             }
@@ -327,7 +340,7 @@ class PackContentManager {
                     item.nextElementSibling.style.height = item.nextElementSibling.scrollHeight + 'px';
                     setTimeout(() => {
                         item.nextElementSibling.style.height = '0px';
-                    }, 0);
+                    }, 50);
 
                     // Close inside opening items
 
@@ -416,10 +429,39 @@ class PackContentManager {
 
                 clearInterval(searchInterval)
 
-                this.search(toSearch);
+                let os;
+
+                let selectedOsValue = $('.osList').options[$('.osList').selectedIndex].value;
+
+                if(selectedOsValue == 1){
+                    os = null;
+                }else{
+                    os = selectedOsValue;
+                }
+
+                this.search(toSearch, os);
 
             }, 1000);
 
+        };
+
+        // for os select
+
+        $('.osList').onchange = ()=>{
+
+            let toSearch = $('.sidebar__header-searchbox-wrapper>.input__box').value.trim();
+
+            if(toSearch !== ''){
+
+                let selectedOsValue = $('.osList').options[$('.osList').selectedIndex].value;
+
+                if(selectedOsValue == 1){
+                    selectedOsValue = null;
+                }
+
+                this.search(toSearch, selectedOsValue);
+
+            }
         };
 
     }
@@ -605,9 +647,13 @@ class PackContentManager {
 
         // Let's change the current dvd in software aside
 
-        $('.list-wrapper__item-dvd.current').classList.remove('current');
+        $$('.list-wrapper__item-dvd.current').forEach(item=>{
+            item.classList.remove('current');
+        })
 
-        $(`.list-wrapper__item-dvd[data-dvd-number='${window.currentDVD}']`).classList.add('current');
+        $$(`.list-wrapper__item-dvd[data-dvd-number='${window.currentDVD}']`).forEach(item=>{
+            item.classList.add('current');
+        })
 
     }
 

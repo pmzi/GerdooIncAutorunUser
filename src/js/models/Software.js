@@ -1,12 +1,12 @@
 const Model = require('./Model');
 
-class Software extends Model{
+class Software extends Model {
 
     /**
      * @constructor
      */
 
-    constructor(){
+    constructor() {
 
         super();
 
@@ -34,42 +34,41 @@ class Software extends Model{
         })
     }
 
-    findClosest(string, catIDs, OS = null){
+    findClosest(string, catIDs, OS = null) {
         return new Promise((resolve, reject) => {
 
             let query = {
-                $or:[
-                    {
-                        title: new RegExp(string,'i')
+                $or: [{
+                        title: new RegExp(string, 'i')
                     },
                     {
-                        tags:{
-                            $regex: new RegExp(string,'i')
+                        tags: {
+                            $regex: new RegExp(string, 'i')
                         }
                     },
                     {
                         faDesc: {
-                            $regex: new RegExp(string,'i')
+                            $regex: new RegExp(string, 'i')
                         }
                     },
                     {
                         enDesc: {
-                            $regex: new RegExp(string,'i')
+                            $regex: new RegExp(string, 'i')
                         }
                     }
                 ],
-                cat:{
+                cat: {
                     $nin: catIDs
                 }
             }
 
-            if(OS !== null){
-                query.push({
-                    oses:{
-                        $regex: new RegExp(OS,'i')
-                    }
-                })
+            if (OS !== null) {
+                query.oses = {
+                    $regex: new RegExp(OS, 'i')
+                }
             }
+
+            console.log(query)
 
             this.db.find(query, (err, result) => {
                 if (err === null) {
