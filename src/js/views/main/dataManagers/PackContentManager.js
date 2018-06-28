@@ -361,6 +361,53 @@ class PackContentManager {
             }, 1000);
 
         };
+
+        // for showing the essentials
+
+        $('.essentialsButton').onclick = ()=>{
+
+            this.showSpecialCard('essentials');
+
+        };
+
+        $('.optionalTabButton').onclick = ()=>{
+
+            this.showSpecialCard('optionalTab');
+
+        };
+
+    }
+
+    showSpecialCard(cardClass){
+        this.hideAllCards().then(()=>{
+
+            $(`.${cardClass}`).classList.remove('none');
+
+            $(`.${cardClass}`).classList.add('card-in');
+
+        })
+    }
+
+    hideAllCards(){
+
+        return new Promise((resolve, reject)=>{
+
+            let cards = $$('.software-wrapper__info-wrapper>div');
+
+            for(let card of cards){
+                card.classList.add('card-out');
+                card.classList.remove('card-in');
+            }
+
+            setTimeout(()=>{
+                for(let card of cards){
+                    card.classList.add('none');
+                }
+                resolve();
+            }, 1000)
+
+        })
+
     }
 
     loadGeneralContents(){
