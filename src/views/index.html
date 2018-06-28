@@ -74,6 +74,17 @@
 
           </a>
 
+          <div class="sidebar__header-pro-search-elipsis-content">
+            <span>
+              سیستم عامل مد نظر خود را انتخاب کنید:
+            </span>
+            <select class="osList select">
+              <option value="1">
+                All
+              </option>
+            </select>
+          </div>
+
         </div>
 
       </header>
@@ -170,7 +181,7 @@
               </i>
             </div>
             <div class="about-gerdoo__content">
-              
+
             </div>
           </div>
         </div>
@@ -197,23 +208,23 @@
             </div>
 
             <div class="software-details__crack-button button button--software">
-                <i class="material-icons pmd-z-depth-1">event</i>
-                <span>
-                  کرک
-                </span>
+              <i class="material-icons pmd-z-depth-1">event</i>
+              <span>
+                کرک
+              </span>
             </div>
 
             <div class="software-details__main-buttons">
 
               <div class="software-details__desc-button button button--slider">
-                  <i class="material-icons active">info_outline</i>
-                  <span>راهنمای نصب</span>
-                  <i class="material-icons">
-                    event
-                  </i>
-                  <span>
-                    توضیحات
-                  </span>
+                <i class="material-icons active">info_outline</i>
+                <span>راهنمای نصب</span>
+                <i class="material-icons">
+                  event
+                </i>
+                <span>
+                  توضیحات
+                </span>
               </div>
 
               <div class="software-details__install-button button pmd-z-depth button--info button--large">
@@ -224,10 +235,10 @@
             </div>
 
             <div class="software-details__suggested-icon">
-                <i></i>
-                <span>
-                  پیشنهادی گردو
-                </span>
+              <i></i>
+              <span>
+                پیشنهادی گردو
+              </span>
             </div>
 
           </div>
@@ -235,7 +246,7 @@
           <div class="software-details__content-wrapper">
 
             <div class="software-details__description active">
-                
+
             </div>
 
             <div class="software-details__installation-guide">
@@ -243,7 +254,7 @@
                 <video src="../videos/small.mp4" controls></video>
               </div>
               <div class="software-details__installation-guide-content">
-                
+
               </div>
             </div>
 
@@ -253,14 +264,14 @@
 
         <div class="page optionalTab pmd-z-depth-2 none">
 
-            <h2 class="page__title">
-              نکات ضروری قبل از نصب نرم‌افزار
-            </h2>
+          <h2 class="page__title">
+            نکات ضروری قبل از نصب نرم‌افزار
+          </h2>
 
-            <div class="page__content">
-              
-            </div>
-  
+          <div class="page__content">
+
+          </div>
+
         </div>
 
         <div class="page essentials pmd-z-depth-2 none">
@@ -270,10 +281,10 @@
           </h2>
 
           <div class="page__content">
-            
+
           </div>
 
-      </div>
+        </div>
 
       </div>
 
@@ -290,7 +301,7 @@
 
   <div class="loading loading--hidden">
     <span class="loading__text">
-        یکی از دیسک‌های گردو را داخل دستگاه خود وارد کنید.
+      یکی از دیسک‌های گردو را داخل دستگاه خود وارد کنید.
     </span>
   </div>
 
@@ -306,6 +317,8 @@
 
   <script>
     require('../js/views/main/dataManagers/PackContentManager');
+
+    require('../js/views/main/dataManagers/OSManager');
 
     require('../js/views/main/dataManagers/GeneralInfoManager');
   </script>

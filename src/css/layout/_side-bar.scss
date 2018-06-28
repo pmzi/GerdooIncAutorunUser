@@ -19,7 +19,6 @@
         .sidebar__header-pro-search-elipsis{
 
             width: 100%;
-            height: 3rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -37,7 +36,53 @@
                 &>i{
 
                     font-size: 1.4rem;
+                    transition-duration: 0.3s;
 
+                    &.rotate{
+                        transition-duration: 0.3s;
+                        transform: rotate(180deg);
+                    }
+
+                }
+
+            }
+
+            .sidebar__header-pro-search-elipsis-content{
+
+                height: 0;
+                
+                overflow: hidden;
+
+                transition-duration: 0.5s;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                padding-top: 0.5rem;
+
+                &.sidebar__ellipsis--show{
+
+                    transition-duration: 0.5s;
+
+                    height: 6rem;
+
+                    flex-shrink: 0;
+
+                }
+
+                &>span{
+                    
+                    font-size: 1.2rem;
+
+                    margin-bottom: 0.5rem;
+
+                    direction: rtl;
+
+                }
+
+                &>select{
+                    margin: auto;
                 }
 
             }

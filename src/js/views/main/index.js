@@ -119,6 +119,24 @@ class Index {
 
         };
 
+        // for showing/hiding search ellipsis
+
+        $('.sidebar__header-pro-search-elipsis-btn').onclick = ()=>{
+
+            let target = $('.sidebar__header-pro-search-elipsis-content');
+
+            if(target.classList.contains('sidebar__ellipsis--show')){
+                target.classList.remove('sidebar__ellipsis--show');
+
+                $('.sidebar__header-pro-search-elipsis-btn>i').classList.remove('rotate');
+
+            }else{
+                target.classList.add('sidebar__ellipsis--show');
+                $('.sidebar__header-pro-search-elipsis-btn>i').classList.add('rotate');
+            }
+
+        };
+
     }
 
     showSpecialCard(cardClass) {

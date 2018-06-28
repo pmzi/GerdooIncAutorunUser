@@ -1,0 +1,14 @@
+.select{
+    width: 80%;
+
+    height: 4rem;
+
+    border: 1px solid #eee;
+    border-radius: 0.5rem;
+
+    cursor: pointer;
+
+    &:focus{
+        outline: 0;
+    }
+}

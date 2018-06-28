@@ -8,6 +8,8 @@ class OS extends Model{
 
     constructor(){
 
+        super();
+
         this.dbName = 'OSes';
 
         this.loadDatabase();
