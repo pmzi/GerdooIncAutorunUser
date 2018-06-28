@@ -7,6 +7,13 @@ class Index {
 
     constructor() {
 
+        // check for music
+
+        if(localStorage.getItem('music') == 0){
+            $('.musicButton>i').textContent = 'music_off'
+            $('audio').pause();
+        }
+
         this.initEvents();
 
     }
@@ -62,6 +69,29 @@ class Index {
     
             };
         })
+
+        // for music
+
+        $('.musicButton').onclick = ()=>{
+            
+            let audio = $('audio');
+            
+            if(audio.paused){
+
+                $('.musicButton>i').textContent = 'music_note';
+
+                localStorage.setItem('music', '1')
+
+                audio.play();
+            }else{
+
+                $('.musicButton>i').textContent = 'music_off';
+
+                localStorage.setItem('music', '0')
+
+                audio.pause();
+            }
+        };
 
     }
 
