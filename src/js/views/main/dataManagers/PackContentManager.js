@@ -28,7 +28,7 @@ class PackContentManager {
         // loads the general contents
 
         this.loadGeneralContents();
-        
+
         // loads the softwares
 
         this.load();
@@ -142,7 +142,7 @@ class PackContentManager {
 
             let cats = await cat.findClosest(toSearch);
 
-            let catIDs = cats.map(cat=>cat._id);
+            let catIDs = cats.map(cat => cat._id);
 
             let softwares = await software.findClosest(toSearch, catIDs);
 
@@ -150,13 +150,13 @@ class PackContentManager {
 
             searchWrapper.empty();
 
-            for(let singleDVD of DVDs){
-                
-                let insideCats = cats.filter(cat=>cat.DVDNumber == singleDVD.number);
+            for (let singleDVD of DVDs) {
 
-                let insideSoftwares = softwares.filter(software=>software.DVDNumber == singleDVD.number);
+                let insideCats = cats.filter(cat => cat.DVDNumber == singleDVD.number);
 
-                if(insideCats.length == 0 && insideSoftwares.length == 0){
+                let insideSoftwares = softwares.filter(software => software.DVDNumber == singleDVD.number);
+
+                if (insideCats.length == 0 && insideSoftwares.length == 0) {
                     continue;
                 }
 
@@ -187,7 +187,7 @@ class PackContentManager {
 
                 let currDVDElem = $(`.list-wrapper.list-wrapper--search > .list-wrapper__item-dvd[data-dvd-number='${singleDVD.number}'] .item-wrapper__item-cat-cont-2`);
 
-                for(let singleCat of insideCats){
+                for (let singleCat of insideCats) {
 
                     currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
                         <div class="list-wrapper__item-content" data-toggleable>
@@ -230,13 +230,13 @@ class PackContentManager {
 
                 let usedCatIDs = [];
 
-                for(let singleSoftware of insideSoftwares){
+                for (let singleSoftware of insideSoftwares) {
 
                     let currCatElem;
 
-                    if(usedCatIDs.includes(singleSoftware.cat)){
+                    if (usedCatIDs.includes(singleSoftware.cat)) {
                         currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${software.cat}']>.list-wrapper-item-software-cont`);
-                    }else{
+                    } else {
 
                         let singleCat = await cat.getById(singleSoftware.cat)
 
@@ -256,9 +256,9 @@ class PackContentManager {
                         </div>
                         </div>`);
                         currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleCat._id}']>.list-wrapper-item-software-cont`);
-                        
+
                         usedCatIDs.push(singleSoftware.cat);
-                        
+
                     }
 
                     let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
@@ -283,7 +283,7 @@ class PackContentManager {
             console.timeEnd('search');
 
             resolve();
-            
+
         });
 
     }
@@ -307,14 +307,14 @@ class PackContentManager {
                 } else {
                     item.nextElementSibling.style.overflow = 'hidden';
                     item.nextElementSibling.style.height = item.nextElementSibling.scrollHeight + 'px';
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         item.nextElementSibling.style.height = '0px';
-                    },0);
+                    }, 0);
 
                     // Close inside opening items
 
-                    if(item.nextElementSibling.querySelector('.active>[data-toggleable]')){
-                        item.nextElementSibling.querySelectorAll('.active>[data-toggleable]').forEach((itemToCLose)=>{
+                    if (item.nextElementSibling.querySelector('.active>[data-toggleable]')) {
+                        item.nextElementSibling.querySelectorAll('.active>[data-toggleable]').forEach((itemToCLose) => {
                             itemToCLose.click()
                         })
                     }
@@ -324,17 +324,59 @@ class PackContentManager {
             }
         }
 
+        // for showing software
+
+        let that = this;
+
+        let softwareElements = $$('.list-wrapper__item-software');
+
+        for (let singleSoftwareElement of softwareElements) {
+
+            singleSoftwareElement.onclick = async function () {
+
+                let softID = this.getAttribute('data-soft-id');
+
+                let currentlyActiveSoft = null;
+
+                if (currentlyActiveSoft = $('.list-wrapper__item-software.active')) {
+                    currentlyActiveSoft.classList.remove('active')
+                };
+
+                this.classList.add('active');
+
+                that.hideAllCards().then(async () => {
+
+                    // showing the soft
+
+                    that.showSoftware(softID).then(() => {
+
+                        if ($('.software-details__desc-button>i:last-of-type').classList.contains('active')) {
+                            $('.software-details__desc-button').dispatchEvent(new Event('needsToggle'))
+                        }
+    
+                        $('.software-details__content-wrapper').style.height = $('.software-details__description').scrollHeight + 'px';
+    
+                        $('.software-details').classList.remove('none');
+                        $('.software-details').classList.add('card-in');
+
+                    })
+                })
+
+            }
+
+        }
+
 
     }
 
-    initStaticEvents(){
+    initStaticEvents() {
         // for the search box
 
         let searchInterval;
 
-        $('.sidebar__header-searchbox-wrapper>.input__box').oninput = (e)=>{
+        $('.sidebar__header-searchbox-wrapper>.input__box').oninput = (e) => {
 
-            if(searchInterval){
+            if (searchInterval) {
                 clearInterval(searchInterval);
             }
 
@@ -342,20 +384,20 @@ class PackContentManager {
 
             toSearch = toSearch.trim();
 
-            if(toSearch === ''){
+            if (toSearch === '') {
                 this.hideSearchDialog();
                 clearInterval(searchInterval)
                 return;
             }
-            
-            if($('.list-wrapper--search').classList.contains('none')){
+
+            if ($('.list-wrapper--search').classList.contains('none')) {
                 this.showSearchDialog();
             }
-            
-            searchInterval = setInterval(()=>{
+
+            searchInterval = setInterval(() => {
 
                 clearInterval(searchInterval)
-                
+
                 this.search(toSearch);
 
             }, 1000);
@@ -364,13 +406,13 @@ class PackContentManager {
 
         // for showing the essentials
 
-        $('.essentialsButton').onclick = ()=>{
+        $('.essentialsButton').onclick = () => {
 
             this.showSpecialCard('essentials');
 
         };
 
-        $('.optionalTabButton').onclick = ()=>{
+        $('.optionalTabButton').onclick = () => {
 
             this.showSpecialCard('optionalTab');
 
@@ -378,8 +420,8 @@ class PackContentManager {
 
     }
 
-    showSpecialCard(cardClass){
-        this.hideAllCards().then(()=>{
+    showSpecialCard(cardClass) {
+        this.hideAllCards().then(() => {
 
             $(`.${cardClass}`).classList.remove('none');
 
@@ -388,19 +430,19 @@ class PackContentManager {
         })
     }
 
-    hideAllCards(){
+    hideAllCards() {
 
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
 
             let cards = $$('.software-wrapper__info-wrapper>div');
 
-            for(let card of cards){
+            for (let card of cards) {
                 card.classList.add('card-out');
                 card.classList.remove('card-in');
             }
 
-            setTimeout(()=>{
-                for(let card of cards){
+            setTimeout(() => {
+                for (let card of cards) {
                     card.classList.add('none');
                 }
                 resolve();
@@ -410,9 +452,11 @@ class PackContentManager {
 
     }
 
-    loadGeneralContents(){
-        
-        return new Promise(async(resolve, reject)=>{
+    loadGeneralContents() {
+
+        return new Promise(async (resolve, reject) => {
+
+            console.log('1')
 
             let generalContents = await generalInfo.get();
 
@@ -425,6 +469,8 @@ class PackContentManager {
             $('.essentials .page__content').innerHTML = generalContents.essentials;
 
             // Loading optional tab
+
+            console.log('sal')
 
             $('.optionalTabButton').textContent = generalContents.tabTitle;
 
@@ -444,22 +490,68 @@ class PackContentManager {
      * Shows software
      */
 
-    showSoftware(id){
+    showSoftware(softID) {
 
-        return new Promise((resolve, reject)=>{
+        return new Promise(async (resolve, reject) => {
 
-            
+            let softInfo = await software.getById(softID);
+
+            $('.software-details__title').innerHTML = softInfo.title;
+
+            $('.software-details__OSes').innerHTML = 'OSes: ' + softInfo.oses.join(', ');
+
+            let programAddress;
+
+            if (softInfo.programAddress) {
+                programAddress = softInfo.programAddress;
+            } else {
+                programAddress = (await cat.getById(softInfo.cat)).title + '/' + softInfo.title;
+            }
+
+            $('.software-details__files-button').setAttribute('data-target', programAddress);            
+
+            if (softInfo.crack) {
+                $('.software-details__crack-button').classList.remove('none');
+                $('.software-details__crack-button').setAttribute('data-target', programAddress + '/' + softInfo.crack);
+            } else {
+                $('.software-details__crack-button').classList.add('none');
+            }
+
+            $('.software-details__install-button').setAttribute('data-target', programAddress + '/' + softInfo.setup);
+
+            // for video
+
+            if (softInfo.video) {
+                $('.software-details__installation-video-wrapper').classList.remove('none');
+                $('.software-details__installation-video-wrapper>video').setAttribute('src', programAddress + '/' + softInfo.video)
+            } else {
+                $('.software-details__installation-video-wrapper').classList.add('none');
+            }
+
+            // for isRecommended
+
+            if (softInfo.isRecommended) {
+                $('.software-details__suggested-icon').classList.remove('invisible');
+            } else {
+                $('.software-details__suggested-icon').classList.add('invisible');
+            }
+
+            $('.software-details__installation-guide-content').innerHTML = softInfo.faGuide;
+
+            $('.software-details__description').innerHTML = softInfo.faDesc;
+
+            resolve();
 
         });
 
     }
 
-    showSearchDialog(){
+    showSearchDialog() {
         $('.list-wrapper:not(.list-wrapper--search)').classList.add('none');
         $('.list-wrapper--search').classList.remove('none');
     }
 
-    hideSearchDialog(){
+    hideSearchDialog() {
         let searchDialog = $('.list-wrapper--search');
         searchDialog.empty();
         searchDialog.classList.add('none');

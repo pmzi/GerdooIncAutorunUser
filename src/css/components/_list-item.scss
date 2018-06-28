@@ -202,9 +202,15 @@
     
                             cursor: pointer;
 
+                            &>.list-wrapper__item-content>span{
+                                transition-duration: 0.3s; 
+                            }
+
                             &.active{
                                 &>.list-wrapper__item-content{
                                     &>span{
+
+                                        transition-duration: 0.3s; 
 
                                         background-color: lighten($primary-color, 10);
     
