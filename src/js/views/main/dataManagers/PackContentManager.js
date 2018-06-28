@@ -1,12 +1,14 @@
 const DVD = require('../../../models/DVD');
 const Software = require('../../../models/Software');
 const Cat = require('../../../models/Cat');
+const GeneralInfo = require('../../../models/GeneralInfo');
 
 //
 
 const cat = new Cat();
 const software = new Software();
 const dvd = new DVD();
+const generalInfo = new GeneralInfo();
 
 //
 
@@ -22,14 +24,14 @@ class PackContentManager {
         window.currentDVD = 3;
 
         this.initStaticEvents();
+
+        // loads the general contents
+
+        this.loadGeneralContents();
         
-        this.load().then(() => {
+        // loads the softwares
 
-            
-
-            
-
-        })
+        this.load();
 
     }
 
@@ -359,6 +361,36 @@ class PackContentManager {
             }, 1000);
 
         };
+    }
+
+    loadGeneralContents(){
+        
+        return new Promise(async(resolve, reject)=>{
+
+            let generalContents = await generalInfo.get();
+
+            // Loading the aboutUs
+
+            $('.about-gerdoo__content').innerHTML = generalContents.aboutUs;
+
+            // Loading the essentials
+
+            $('.essentials .page__content').innerHTML = generalContents.essentials;
+
+            // Loading optional tab
+
+            $('.optionalTabButton').textContent = generalContents.tabTitle;
+
+            $('.optionalTabButton').classList.remove('hidden');
+
+            $('.optionalTab .page__title').innerHTML = generalContents.tabTitle;
+
+            $('.optionalTab .page__content').innerHTML = generalContents.tabContent;
+
+            resolve();
+
+        });
+
     }
 
     /**

@@ -39,6 +39,20 @@ class GeneralInfo extends Model{
         });
      }
 
+     get(){
+        return new Promise((resolve, reject)=>{
+
+            this.db.findOne({},(error, result)=>{
+                if(error === null){
+                    resolve(result);
+                }else{
+                    reject(error);
+                }
+            })
+
+        });
+     }
+
 }
 
 module.exports = GeneralInfo;
