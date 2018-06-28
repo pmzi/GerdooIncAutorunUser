@@ -516,7 +516,7 @@ class PackContentManager {
 
             $('.software-details__header').style.backgroundImage = `url('../db/assets/${softInfo.image}')`;
 
-            $('.software-details__title').innerHTML = softInfo.title;
+            $('.software-details__title').innerHTML = softInfo.title + ` ${softInfo.version}`;
 
             $('.software-details__OSes').innerHTML = 'OSes: ' + softInfo.oses.join(', ');
 
