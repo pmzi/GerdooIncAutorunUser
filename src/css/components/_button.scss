@@ -70,6 +70,13 @@
 
         }
 
+        &:active{
+            &{
+                background-color: $primary-color;
+                color: white;
+            }
+        }
+
         &>i.active{
 
             & + span{
