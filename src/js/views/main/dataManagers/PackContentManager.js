@@ -422,20 +422,6 @@ class PackContentManager {
 
         };
 
-        // for showing the essentials
-
-        $('.essentialsButton').onclick = () => {
-
-            this.showSpecialCard('essentials');
-
-        };
-
-        $('.optionalTabButton').onclick = () => {
-
-            this.showSpecialCard('optionalTab');
-
-        };
-
     }
 
     showSpecialCard(cardClass) {
@@ -474,8 +460,6 @@ class PackContentManager {
 
         return new Promise(async (resolve, reject) => {
 
-            console.log('1')
-
             let generalContents = (await generalInfo.fetchAll("_id", 1))[0];
 
             // Loading the aboutUs
@@ -487,8 +471,6 @@ class PackContentManager {
             $('.essentials .page__content').innerHTML = generalContents.essentials;
 
             // Loading optional tab
-
-            console.log('sal')
 
             $('.optionalTabButton').textContent = generalContents.tabTitle;
 

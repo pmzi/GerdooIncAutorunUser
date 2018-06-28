@@ -67,14 +67,26 @@ class Index {
         $$('.software-details__close,.software-wrapper__info-wrapper').forEach(item => {
             item.onclick = () => {
 
-                if ($('.list-wrapper__item-software.active')) {
-                    $('.list-wrapper__item-software.active').classList.remove('active')
-                }
+                // remove active software class
 
                 this.showSpecialCard('about-gerdoo');
 
             };
         })
+
+        // for showing the essentials
+
+        $('.essentialsButton').onclick = () => {
+
+            this.showSpecialCard('essentials');
+
+        };
+
+        $('.optionalTabButton').onclick = () => {
+
+            this.showSpecialCard('optionalTab');
+
+        };
 
         // for music
 
@@ -122,6 +134,10 @@ class Index {
     hideAllCards() {
 
         return new Promise((resolve, reject) => {
+
+            if ($('.list-wrapper__item-software.active')) {
+                $('.list-wrapper__item-software.active').classList.remove('active')
+            }
 
             let cards = $$('.software-wrapper__info-wrapper>div');
 
