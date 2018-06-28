@@ -19,6 +19,8 @@ class PackContentManager {
 
         // loads all the dvds, cats and softwares into the menu
 
+        window.currentDVD = 3;
+
         this.initStaticEvents();
         
         this.load().then(() => {
@@ -45,7 +47,9 @@ class PackContentManager {
 
                 // let's add DVD's element
 
-                $('.list-wrapper').append(`<div data-dvd-number='${singleDVD.number}' class="list-wrapper__item-dvd"><div class="list-wrapper__item-content" data-toggleable>
+                let isCurrent = window.currentDVD == singleDVD.number ? 'current' : '';
+
+                $('.list-wrapper').append(`<div data-dvd-number='${singleDVD.number}' class="list-wrapper__item-dvd ${isCurrent}"><div class="list-wrapper__item-content" data-toggleable>
                 <i class="material-icons">
                   add
                 </i>
@@ -128,7 +132,155 @@ class PackContentManager {
 
         return new Promise(async (resolve, reject) => {
 
+            console.time('search');
 
+            // let's search in category
+
+            let DVDs = await dvd.fetchAll("number", 1);
+
+            let cats = await cat.findClosest(toSearch);
+
+            let catIDs = cats.map(cat=>cat._id);
+
+            let softwares = await software.findClosest(toSearch, catIDs);
+
+            let searchWrapper = $('.list-wrapper.list-wrapper--search');
+
+            searchWrapper.empty();
+
+            for(let singleDVD of DVDs){
+                
+                let insideCats = cats.filter(cat=>cat.DVDNumber == singleDVD.number);
+
+                let insideSoftwares = softwares.filter(software=>software.DVDNumber == singleDVD.number);
+
+                if(insideCats.length == 0 && insideSoftwares.length == 0){
+                    continue;
+                }
+
+                // appending the dvd item
+
+                let isCurrent = window.currentDVD == singleDVD.number ? 'current' : '';
+
+                searchWrapper.append(`<div data-dvd-number='${singleDVD.number}' class="list-wrapper__item-dvd ${isCurrent}"><div class="list-wrapper__item-content" data-toggleable>
+                    <i class="material-icons">
+                    add
+                    </i>
+                    <i class="material-icons">
+                    remove
+                    </i>
+                    <i class="material-icons">
+                    adjust
+                    </i>
+                    <span>
+                    Disk ${singleDVD.number}
+                    </span>
+                    <span>
+                        دیسک فعلی
+                    </span>
+                </div><div class="item-wrapper__item-cat-cont-1">
+                <div class="item-wrapper__item-cat-cont-2">
+                    
+                </div></div></div>`);
+
+                let currDVDElem = $(`.list-wrapper.list-wrapper--search > .list-wrapper__item-dvd[data-dvd-number='${singleDVD.number}'] .item-wrapper__item-cat-cont-2`);
+
+                for(let singleCat of insideCats){
+
+                    currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
+                        <div class="list-wrapper__item-content" data-toggleable>
+                        <i class="material-icons">
+                            add
+                        </i>
+                        <i class="material-icons">
+                            remove
+                        </i>
+                        <span>
+                            ${singleCat.title}
+                        </span>
+                        </div>
+                        <div class='list-wrapper-item-software-cont'>
+                        </div>
+                        </div>`);
+
+                    let currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleCat._id}']>.list-wrapper-item-software-cont`);
+
+                    let insideCatSoftwares = await software.getSoftwaresByCat(singleCat._id);
+
+                    for (let singleSoftware of insideCatSoftwares) {
+                        // let's add software's element
+
+                        let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
+
+                        currCatElem.append(`<div data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
+                        <div class="list-wrapper__item-content">
+                          ${verifiedLogo}
+                          <span>
+                            ${singleSoftware.title}
+                          </span>
+                        </div>
+                      </div>`);
+                    }
+
+                }
+
+                // let's show the single software ones
+
+                let usedCatIDs = [];
+
+                for(let singleSoftware of insideSoftwares){
+
+                    let currCatElem;
+
+                    if(usedCatIDs.includes(singleSoftware.cat)){
+                        currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${software.cat}']>.list-wrapper-item-software-cont`);
+                    }else{
+
+                        let singleCat = await cat.getById(singleSoftware.cat)
+
+                        currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
+                        <div class="list-wrapper__item-content" data-toggleable>
+                        <i class="material-icons">
+                            add
+                        </i>
+                        <i class="material-icons">
+                            remove
+                        </i>
+                        <span>
+                            ${singleCat.title}
+                        </span>
+                        </div>
+                        <div class='list-wrapper-item-software-cont'>
+                        </div>
+                        </div>`);
+                        currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleCat._id}']>.list-wrapper-item-software-cont`);
+                        
+                        usedCatIDs.push(singleSoftware.cat);
+                        
+                    }
+
+                    let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
+
+                    currCatElem.append(`<div data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
+                        <div class="list-wrapper__item-content">
+                        ${verifiedLogo}
+                        <span>
+                            ${singleSoftware.title}
+                        </span>
+                        </div>
+                        </div>`);
+
+                }
+
+            }
+
+            $('.list-wrapper').trigger('reload');
+
+            this.initSoftwareEvents();
+
+            console.timeEnd('search');
+
+            resolve();
             
         });
 

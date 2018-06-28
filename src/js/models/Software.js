@@ -34,26 +34,44 @@ class Software extends Model{
         })
     }
 
-    findClosest(string, catId, DVDNumber){
-        DVDNumber = parseInt(DVDNumber);
+    findClosest(string, catIDs, OS = null){
         return new Promise((resolve, reject) => {
 
-            this.db.find({
+            let query = {
                 $or:[
                     {
-                        title: new RegExp(string,'i'),
-                        DVDNumber,
-                        cat: catId
+                        title: new RegExp(string,'i')
                     },
                     {
                         tags:{
                             $regex: new RegExp(string,'i')
-                        },
-                        DVDNumber,
-                        cat: catId
+                        }
+                    },
+                    {
+                        faDesc: {
+                            $regex: new RegExp(string,'i')
+                        }
+                    },
+                    {
+                        enDesc: {
+                            $regex: new RegExp(string,'i')
+                        }
                     }
-                ]
-            }, (err, result) => {
+                ],
+                cat:{
+                    $nin: catIDs
+                }
+            }
+
+            if(OS !== null){
+                query.push({
+                    oses:{
+                        $regex: new RegExp(OS,'i')
+                    }
+                })
+            }
+
+            this.db.find(query, (err, result) => {
                 if (err === null) {
                     resolve(result)
                 } else {

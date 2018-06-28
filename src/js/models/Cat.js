@@ -37,18 +37,29 @@ class Cat extends Model{
         });
     }
 
-    isProper(cat, toSearch){
+    findClosest(string){
+        return new Promise((resolve, reject) => {
 
-        let regexp = new RegExp(toSearch, 'i');
+            this.db.find({
+                $or:[
+                    {
+                        title: new RegExp(string,'i')
+                    },
+                    {
+                        tags:{
+                            $regex: new RegExp(string,'i')
+                        }
+                    }
+                ]
+            }, {tags: -1} , (err, result) => {
+                if (err === null) {
+                    resolve(result)
+                } else {
+                    reject(err)
+                }
+            });
 
-        if(regexp.test(cat.tags)){
-            return true;
-        }else if(regexp.test(cat.title)){
-            return true;
-        }
-        
-        return false;
-
+        });
     };
 
 }
