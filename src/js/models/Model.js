@@ -2,6 +2,10 @@ const Datastore = require('nedb');
 
 class Model {
 
+    constructor(){
+        this.loaded = false;
+    }
+
     loadDatabase() {
 
         // let's load the db
@@ -9,7 +13,10 @@ class Model {
             filename: `${__dirname}/../../db/${this.dbName}.db`
         });
 
-        this.db.loadDatabase();
+        this.db.loadDatabase(()=>{
+            this.loaded = true;
+            this.afterLoaded()
+        });
 
     }
 
@@ -70,6 +77,14 @@ class Model {
             })
         })
     }
+
+    /**
+     * This functions executes after db is loaded 
+     */
+
+     afterLoaded(){
+
+     }
 }
 
 module.exports = Model;
