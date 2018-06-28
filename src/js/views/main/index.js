@@ -1,7 +1,13 @@
 const {
     exec
-} = require('child_process')
+} = require('child_process');
+const {
+    dialog
+} = require('electron').remote;
 const path = require('path');
+const fs = require('fs');
+
+const ncp = require('ncp').ncp;
 
 class Index {
 
@@ -9,7 +15,7 @@ class Index {
 
         // check for music
 
-        if(localStorage.getItem('music') == 0){
+        if (localStorage.getItem('music') == 0) {
             $('.musicButton>i').textContent = 'music_off'
             $('audio').pause();
         }
@@ -36,54 +42,54 @@ class Index {
             this.toggleSoftwareContent();
         })
 
-        $$('.software-wrapper__info-wrapper>div').forEach(item=>{
-            item.onclick = (e)=>{
+        $$('.software-wrapper__info-wrapper>div').forEach(item => {
+            item.onclick = (e) => {
                 e.stopPropagation()
             }
         })
 
         let that = this;
 
-        $$('.software-details__files-button>i,.software-details__crack-button>i').forEach(item=>{
-            item.onclick = function(){
+        $$('.software-details__files-button>i,.software-details__crack-button>i').forEach(item => {
+            item.onclick = function () {
 
-                that.open(path.join(__dirname ,'../../../',this.parentElement.getAttribute('data-target')));
-    
+                that.open(path.join(__dirname, '../../../', this.parentElement.getAttribute('data-target')));
+
             }
         })
 
-        $('.software-details__install-button').onclick = function(){
-            that.open(path.join(__dirname ,'../../../',this.getAttribute('data-target')));
+        $('.software-details__install-button').onclick = function () {
+            that.open(path.join(__dirname, '../../../', this.getAttribute('data-target')));
         };
 
-        // for closing
+        // for closing the card
 
-        $$('.software-details__close,.software-wrapper__info-wrapper').forEach(item=>{
-            item.onclick = ()=>{
+        $$('.software-details__close,.software-wrapper__info-wrapper').forEach(item => {
+            item.onclick = () => {
 
-                if($('.list-wrapper__item-software.active')){
+                if ($('.list-wrapper__item-software.active')) {
                     $('.list-wrapper__item-software.active').classList.remove('active')
                 }
-    
+
                 this.showSpecialCard('about-gerdoo');
-    
+
             };
         })
 
         // for music
 
-        $('.musicButton').onclick = ()=>{
-            
+        $('.musicButton').onclick = () => {
+
             let audio = $('audio');
-            
-            if(audio.paused){
+
+            if (audio.paused) {
 
                 $('.musicButton>i').textContent = 'music_note';
 
                 localStorage.setItem('music', '1')
 
                 audio.play();
-            }else{
+            } else {
 
                 $('.musicButton>i').textContent = 'music_off';
 
@@ -91,6 +97,14 @@ class Index {
 
                 audio.pause();
             }
+        };
+
+        // for install autorun button
+
+        $('.autorunInstallButton').onclick = () => {
+
+            this.installAutorun();
+
         };
 
     }
@@ -127,8 +141,8 @@ class Index {
 
     }
 
-    open(address){
-        exec(`start ${address}`, (err)=>{
+    open(address) {
+        exec(`start ${address}`, (err) => {
             console.log(err)
         });
     }
@@ -184,6 +198,12 @@ class Index {
             IGWrapper.classList.remove('active');
         }
 
+
+    }
+
+    installAutorun() {
+        console.log(path.join(__dirname,'../../setup/setup.exe'))
+        this.open(path.join(__dirname,'../../setup/setup.exe'))
 
     }
 
