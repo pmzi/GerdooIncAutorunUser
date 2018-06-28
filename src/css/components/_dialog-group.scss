@@ -1,0 +1,43 @@
+.dialog-group{
+
+    width: 100%;
+    padding: 2rem 0;
+
+    height: 4rem;
+
+    box-sizing: content-box;
+
+    display: flex;
+    flex-direction: row-reverse;
+
+    &__input{
+
+        flex-grow: 1;
+
+        height: 100%;
+
+        border:1px solid #eee;
+        border-radius: 0.5rem;
+
+        padding: 0 1rem;
+        box-sizing: border-box;
+
+        direction: ltr;
+
+        &:focus{
+            outline: 0;
+        }
+
+    }
+
+    &__button{
+
+        flex-basis: 4rem;
+
+        margin-left: 1rem;
+
+        box-sizing: border-box;
+
+    }
+
+}
