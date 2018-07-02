@@ -1,9 +1,11 @@
 const Model = require('./Model');
 
+// The DVD model
+
 class DVD extends Model{
 
     /**
-     * @constructor
+     * @constructor loads the DB
      */
 
     constructor(){

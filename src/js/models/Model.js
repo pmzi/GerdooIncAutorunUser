@@ -2,13 +2,24 @@ const Datastore = require('nedb');
 
 class Model {
 
+    /**
+     * @constructor
+     */
+
     constructor(){
+
         this.loaded = false;
+
     }
+
+    /**
+     * Loads the DB
+     */
 
     loadDatabase() {
 
         // let's load the db
+
         this.db = new Datastore({
             filename: `${__dirname}/../../db/${this.dbName}.db`
         });
@@ -44,8 +55,8 @@ class Model {
 
     /**
      * Deletes a record by it's ID
-     * @param {ObjectID} id - The id of the record
-     * @return {Promise}
+     * @param {String} id - The id of the record
+     * @returns {Promise}
      */
 
     deleteById(id) {
@@ -62,7 +73,7 @@ class Model {
 
     /**
      * Gets the record by it's ID
-     * @param {ObjectID} id- The id of the record
+     * @param {String} id- The id of the record
      * @return {Promise} - Returnes data in resolve of the Promise
      */
 
@@ -79,7 +90,7 @@ class Model {
     }
 
     /**
-     * This functions executes after db is loaded 
+     * This functions executes after DB is loaded 
      */
 
      afterLoaded(){

@@ -1,9 +1,11 @@
 const Model = require('./Model');
 
+// The Cat model
+
 class Cat extends Model{
 
     /**
-     * @constructor
+     * @constructor loads the DB
      */
 
     constructor(){
@@ -17,7 +19,9 @@ class Cat extends Model{
     }
 
     /**
-     * 
+     * Gets cats which are inside the given DVDNumber
+     * @param {Number} DVDNumber - The number of the DVD
+     * @returns {Promise} 
      */
 
     getCatsByDVDNumber(DVDNumber) {
@@ -36,6 +40,12 @@ class Cat extends Model{
             });
         });
     }
+
+    /**
+     * Searches the categories for any matches of the string given
+     * @param {String} string - The string which is used to find matches
+     * @returns {Promise}
+     */
 
     findClosest(string){
         return new Promise((resolve, reject) => {

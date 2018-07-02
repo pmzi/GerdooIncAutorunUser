@@ -1,9 +1,11 @@
 const Model = require('./Model');
 
+// The OS model
+
 class OS extends Model{
 
     /**
-     * @constructor
+     * @constructor loads the DB
      */
 
     constructor(){

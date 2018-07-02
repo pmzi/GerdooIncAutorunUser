@@ -1,9 +1,11 @@
 const Model = require('./Model');
 
+// The GeneralInfo model
+
 class GeneralInfo extends Model{
 
     /**
-     * @constructor
+     * @constructor loads the DB
      */
 
     constructor(){

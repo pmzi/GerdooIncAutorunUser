@@ -1,9 +1,11 @@
 const Model = require('./Model');
 
+// the Software model
+
 class Software extends Model {
 
     /**
-     * @constructor
+     * @constructor loads the DB
      */
 
     constructor() {
@@ -15,6 +17,12 @@ class Software extends Model {
         this.loadDatabase();
 
     }
+
+    /**
+     * Gets softwares which are in the given category
+     * @param {String} id - The id of the category
+     * @returns {Promise}
+     */
 
     getSoftwaresByCat(id) {
         return new Promise((resolve, reject) => {
@@ -33,6 +41,14 @@ class Software extends Model {
 
         })
     }
+
+    /**
+     * Searches the softwares for any matches of the string given
+     * @param {String} string - The string which is used to find matches
+     * @param {Array} catIDs - The catIDs to exclude and not search in them
+     * @param {String} os - The id of the OS to filter the softwares
+     * @returns {Promise}
+     */
 
     findClosest(string, catIDs, OS = null) {
         return new Promise((resolve, reject) => {
