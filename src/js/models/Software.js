@@ -107,8 +107,8 @@ class Software extends Model {
     countCatSoftwaresByOS(cat, OS) {
         return new Promise((resolve, reject)=>{
             this.db.count({
-                catId: cat,
-                OS: {
+                cat,
+                oses: {
                     $regex: new RegExp(OS)
                 }
             },(err, result)=>{

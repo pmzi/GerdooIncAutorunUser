@@ -192,11 +192,13 @@ class PackContentManager {
 
                 // If any os specified
 
+                let shouldContinue = true;
+
                 if(OS !== null){
 
                     // Let's check whether each cat has any software that supports specified OS or not
 
-                    let shouldContinue = false;
+                    shouldContinue = false;
 
                     for(let singleCat of insideCats){
                         if((await software.countCatSoftwaresByOS(singleCat._id, OS)) !== 0){
@@ -206,7 +208,7 @@ class PackContentManager {
                         }
                     }
 
-                    if(!shouldContinue){
+                    if(!shouldContinue && insideSoftwares.length == 0){
                         // If there isn't any softwares that supports specified OS then contirnue
                         continue;
                     }
@@ -246,60 +248,66 @@ class PackContentManager {
 
                 // Let's append softwares of each cat of this DVD
 
-                for (let singleCat of insideCats) {
+                if(shouldContinue){
+                    for (let singleCat of insideCats) {
 
-                    // Let's get the softwares which are inside this cat
+                        // Let's get the softwares which are inside this cat
+    
+                        let insideCatSoftwares = await software.getSoftwaresByCat(singleCat._id);
 
-                    let insideCatSoftwares = await software.getSoftwaresByCat(singleCat._id);
-
-                    // Let's append the cat element
-
-                    currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
-                        <div class="list-wrapper__item-content" data-toggleable>
-                        <i class="material-icons">
-                            add
-                        </i>
-                        <i class="material-icons">
-                            remove
-                        </i>
-                        <span>
-                            ${singleCat.title}
-                        </span>
-                        </div>
-                        <div class='list-wrapper-item-software-cont'>
-                        </div>
-                    </div>`);
-
-                    // Let's get the current cat element
-                    
-                    let currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleCat._id}']>.list-wrapper-item-software-cont`);
-
-                    // Let's append each software of this cat
-
-                    for (let singleSoftware of insideCatSoftwares) {
-
-                        // This happens when another search starts at the same time
-
-                        if(currCatElem === null){
-                            reject();
-                            return;
+                        if(OS !== null){
+                            insideCatSoftwares = insideCatSoftwares.filter(soft=>soft.oses.includes(OS))
                         }
-
-                        // let's append software's element
-
-                        let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
-
-                        currCatElem.append(`<div title='${singleSoftware.title}' data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
-                        <div class="list-wrapper__item-content">
-                          ${verifiedLogo}
-                          <span>
-                            ${singleSoftware.title}
-                          </span>
-                        </div>
-                      </div>`);
-
+    
+                        // Let's append the cat element
+    
+                        currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
+                            <div class="list-wrapper__item-content" data-toggleable>
+                            <i class="material-icons">
+                                add
+                            </i>
+                            <i class="material-icons">
+                                remove
+                            </i>
+                            <span>
+                                ${singleCat.title}
+                            </span>
+                            </div>
+                            <div class='list-wrapper-item-software-cont'>
+                            </div>
+                        </div>`);
+    
+                        // Let's get the current cat element
+                        
+                        let currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleCat._id}']>.list-wrapper-item-software-cont`);
+    
+                        // Let's append each software of this cat
+    
+                        for (let singleSoftware of insideCatSoftwares) {
+    
+                            // This happens when another search starts at the same time
+    
+                            if(currCatElem === null){
+                                reject();
+                                return;
+                            }
+    
+                            // let's append software's element
+    
+                            let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
+    
+                            currCatElem.append(`<div title='${singleSoftware.title}' data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
+                            <div class="list-wrapper__item-content">
+                              ${verifiedLogo}
+                              <span>
+                                ${singleSoftware.title}
+                              </span>
+                            </div>
+                          </div>`);
+    
+                        }
+    
                     }
-
                 }
 
                 // Let's show the result of matching softwares
@@ -558,7 +566,7 @@ class PackContentManager {
 
         // Event for OS select box
 
-        $('.osList').onchange = () => {
+        $('.osList').on('change toggledUp', () => {
 
             let toSearch = $('.sidebar__header-searchbox-wrapper>.input__box').value.trim();
 
@@ -577,7 +585,7 @@ class PackContentManager {
                 })
 
             }
-        };
+        });
 
     }
 
@@ -724,7 +732,7 @@ class PackContentManager {
     }
 
     /**
-     * Shows more search section
+     * Shows search result section
      */
 
     static showSearchDialog() {
@@ -736,7 +744,7 @@ class PackContentManager {
     }
 
     /**
-     * Hides more search section
+     * Hides search result section 
      */
 
     static hideSearchDialog() {

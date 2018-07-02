@@ -28,3 +28,10 @@ Element.prototype.append = function(html){
 Element.prototype.trigger = function(eventName){
     this.dispatchEvent(new Event(eventName));
 }
+
+Element.prototype.on = function(eventNames, eventFunction){
+    eventNames = eventNames.split(" ");
+    for(let eventName of eventNames){
+        this.addEventListener(eventName, eventFunction);
+    }
+}

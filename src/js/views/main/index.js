@@ -123,11 +123,19 @@ class Index {
             let target = $('.sidebar__header-pro-search-elipsis-content');
 
             if(target.classList.contains('sidebar__ellipsis--show')){
+
+                $('.osList>option:first-of-type').setAttribute('selected','selected');
+
+                $('.osList').trigger('toggledUp');
+
                 target.classList.remove('sidebar__ellipsis--show');
 
                 $('.sidebar__header-pro-search-elipsis-btn>i').classList.remove('rotate');
 
             }else{
+
+                $('.osList>option:first-of-type').removeAttribute('selected');
+
                 target.classList.add('sidebar__ellipsis--show');
                 $('.sidebar__header-pro-search-elipsis-btn>i').classList.add('rotate');
             }
