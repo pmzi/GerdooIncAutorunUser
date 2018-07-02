@@ -348,9 +348,10 @@ class PackContentManager {
                             $('.software-details__desc-button').dispatchEvent(new Event('needsToggle'))
                         }
 
-                        $('.software-details__content-wrapper').style.height = $('.software-details__description').scrollHeight + 'px';
-
                         $('.software-details').classList.remove('none');
+
+                        $('.software-details__content-wrapper').style.height = $('.software-details__description').scrollHeight + 'px';
+                        
                         $('.software-details').classList.add('card-in');
 
                     })
