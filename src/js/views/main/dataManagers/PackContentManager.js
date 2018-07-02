@@ -30,7 +30,6 @@ class PackContentManager {
     static async load() {
 
         return new Promise(async (resolve, reject) => {
-            console.time("end");
 
             // Let's empty the menu
 
@@ -42,70 +41,86 @@ class PackContentManager {
 
             for (let singleDVD of DVDs) {
 
-                // let's add DVD's element
+                // let's append DVD's element
 
                 let isCurrent = window.currentDVD == singleDVD.number ? 'current' : '';
 
                 $('.list-wrapper').append(`<div data-dvd-number='${singleDVD.number}' class="list-wrapper__item-dvd ${isCurrent}"><div class="list-wrapper__item-content" data-toggleable>
-                <i class="material-icons">
-                  add
-                </i>
-                <i class="material-icons">
-                  remove
-                </i>
-                <i class="material-icons">
-                  adjust
-                </i>
-                <span>
-                  Disk ${singleDVD.number}
-                </span>
-                <span>
-                    دیسک فعلی
-                </span>
-              </div><div class="item-wrapper__item-cat-cont-1">
-              <div class="item-wrapper__item-cat-cont-2">
+                        <i class="material-icons">
+                        add
+                        </i>
+                        <i class="material-icons">
+                        remove
+                        </i>
+                        <i class="material-icons">
+                        adjust
+                        </i>
+                        <span>
+                        Disk ${singleDVD.number}
+                        </span>
+                        <span>
+                            دیسک فعلی
+                        </span>
+                    </div><div class="item-wrapper__item-cat-cont-1">
+                    <div class="item-wrapper__item-cat-cont-2">
                 
-              </div></div></div>`);
+                </div></div></div>`);
+
+                // Let's get the current element
 
                 let currDVDElem = $(`.list-wrapper > .list-wrapper__item-dvd[data-dvd-number='${singleDVD.number}'] .item-wrapper__item-cat-cont-2`);
 
+                // Let's get the cats of the current DVD
+
                 let cats = await cat.getCatsByDVDNumber(singleDVD.number);
 
+                // Let's append each cat's element
+
                 for (let singleCat of cats) {
-                    // let's add cat's element
+
+                    // let's append cat's element
+
                     currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
-                    <div class="list-wrapper__item-content" data-toggleable>
-                      <i class="material-icons">
-                        add
-                      </i>
-                      <i class="material-icons">
-                        remove
-                      </i>
-                      <span>
-                        ${singleCat.title}
-                      </span>
-                    </div>
-                    <div class='list-wrapper-item-software-cont'>
-                    </div>
+                        <div class="list-wrapper__item-content" data-toggleable>
+                        <i class="material-icons">
+                            add
+                        </i>
+                        <i class="material-icons">
+                            remove
+                        </i>
+                        <span>
+                            ${singleCat.title}
+                        </span>
+                        </div>
+                        <div class='list-wrapper-item-software-cont'>
+                        </div>
                     </div>`);
+
+                    // Let's get the element of the current cat
 
                     let currCatElem = $(`.list-wrapper__item-cat[data-cat-id='${singleCat._id}']>.list-wrapper-item-software-cont`);
 
+                    // Let's get softwares of current cat
+
                     let softwares = await software.getSoftwaresByCat(singleCat._id);
 
+                    // Let's append softwares
+
                     for (let singleSoftware of softwares) {
-                        // let's add software's element
+
+                        // let's append software's element
 
                         let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
 
                         currCatElem.append(`<div title='${singleSoftware.title}' data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
-                        <div class="list-wrapper__item-content">
-                          ${verifiedLogo}
-                          <span>
-                            ${singleSoftware.title}
-                          </span>
-                        </div>
-                      </div>`);
+                            <div class="list-wrapper__item-content">
+                            ${verifiedLogo}
+                            <span>
+                                ${singleSoftware.title}
+                            </span>
+                            </div>
+                        </div>`);
+
                     }
 
                 }
@@ -113,49 +128,77 @@ class PackContentManager {
 
             }
 
-            // We are finished;)
+            // Let's inform thers that the appending oporation is done
 
             $('.list-wrapper').trigger('reload');
 
+            // Let's reinit the software events so that newly added elements will be toggleable
+
             this.initSoftwareEvents();
-            console.timeEnd("end");
+
+            // We are done
+
             resolve();
+
 
         });
 
     }
 
+    /**
+     * Searches the softwares
+     * @param {String} toSearch - The string we are going to search with
+     * @param {String} OS - The OS id to filter softwares
+     * @returns {Promise}
+     */
+
     static async search(toSearch, OS = null) {
 
         return new Promise(async (resolve, reject) => {
-
-            console.time('search');
 
             // let's search in category
 
             let DVDs = await dvd.fetchAll("number", 1);
 
+            // Let's get the matching cats
+
             let cats = await cat.findClosest(toSearch, OS);
+
+            // Let's get catIDs
 
             let catIDs = cats.map(cat => cat._id);
 
+            // Let's get the matching softwares
+
             let softwares = await software.findClosest(toSearch, catIDs, OS);
+
+            // Let's get the searchWrapper element
 
             let searchWrapper = $('.list-wrapper.list-wrapper--search');
 
+            // Let's make the searchWrapper empty
+
             searchWrapper.empty();
+
+            // Let's go by each DVD and append search result
 
             for (let singleDVD of DVDs) {
 
+                // Let's get the cats which are inside this DVD
+
                 let insideCats = cats.filter(cat => cat.DVDNumber == singleDVD.number);
 
+                // Let's get the softwares which are inside this DVD
+
                 let insideSoftwares = softwares.filter(software => software.DVDNumber == singleDVD.number);
+
+                // Check if there is no cat or software inside this DVD then go to next one
 
                 if (insideCats.length == 0 && insideSoftwares.length == 0) {
                     continue;
                 }
 
-                // appending the dvd item
+                // Let's append the DVD item
 
                 let isCurrent = window.currentDVD == singleDVD.number ? 'current' : '';
 
@@ -180,11 +223,21 @@ class PackContentManager {
                     
                 </div></div></div>`);
 
+                // Let's get the current DVD
+
                 let currDVDElem = $(`.list-wrapper.list-wrapper--search > .list-wrapper__item-dvd[data-dvd-number='${singleDVD.number}'] .item-wrapper__item-cat-cont-2`);
+
+                // Let's show the result of matching cats
+
+                // Let's append softwares of each cat of this DVD
 
                 for (let singleCat of insideCats) {
 
+                    // Let's get the softwares which are inside this cat
+
                     let insideCatSoftwares = await software.getSoftwaresByCat(singleCat._id);
+
+                    // Let's append the cat element
 
                     currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
                         <div class="list-wrapper__item-content" data-toggleable>
@@ -200,13 +253,17 @@ class PackContentManager {
                         </div>
                         <div class='list-wrapper-item-software-cont'>
                         </div>
-                        </div>`);
+                    </div>`);
 
+                    // Let's get the current cat element
+                    
                     let currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleCat._id}']>.list-wrapper-item-software-cont`);
+
+                    // Let's append each software of this cat
 
                     for (let singleSoftware of insideCatSoftwares) {
 
-                        // let's add software's element
+                        // let's append software's element
 
                         let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
 
@@ -218,11 +275,14 @@ class PackContentManager {
                           </span>
                         </div>
                       </div>`);
+
                     }
 
                 }
 
-                // let's show the single software ones
+                // Let's show the result of matching softwares
+
+                // An array of appended categories so that we won't append them again
 
                 let usedCatIDs = [];
 
@@ -230,31 +290,49 @@ class PackContentManager {
 
                     let currCatElem;
 
+                    // Check whether cat of this software is already appended or not
+
                     if (usedCatIDs.includes(singleSoftware.cat)) {
+
+                        // Yep! Let's select it
+
                         currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleSoftware.cat}']>.list-wrapper-item-software-cont`);
+                    
                     } else {
-                        let singleCat = await cat.getById(singleSoftware.cat)
+
+                        // Let's get the information of the category o fthe current software
+
+                        let singleCat = await cat.getById(singleSoftware.cat);
+
+                        // Let's append the category
 
                         currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
-                        <div class="list-wrapper__item-content" data-toggleable>
-                        <i class="material-icons">
-                            add
-                        </i>
-                        <i class="material-icons">
-                            remove
-                        </i>
-                        <span>
-                            ${singleCat.title}
-                        </span>
-                        </div>
-                        <div class='list-wrapper-item-software-cont'>
-                        </div>
+                            <div class="list-wrapper__item-content" data-toggleable>
+                            <i class="material-icons">
+                                add
+                            </i>
+                            <i class="material-icons">
+                                remove
+                            </i>
+                            <span>
+                                ${singleCat.title}
+                            </span>
+                            </div>
+                            <div class='list-wrapper-item-software-cont'>
+                            </div>
                         </div>`);
+
+                        // Let's select the category
+
                         currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleCat._id}']>.list-wrapper-item-software-cont`);
+
+                        // Let's add this category to the array so that we now that this exists
 
                         usedCatIDs.push(singleSoftware.cat);
 
                     }
+
+                    // Let's append the software
 
                     let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
 
@@ -271,11 +349,15 @@ class PackContentManager {
 
             }
 
+            // Let's inform thers that the appending oporation is done
+
             $('.list-wrapper').trigger('reload');
+
+            // Let's reinit the software events so that newly added elements will be toggleable
 
             this.initSoftwareEvents();
 
-            console.timeEnd('search');
+            // We are done
 
             resolve();
 
@@ -283,43 +365,67 @@ class PackContentManager {
 
     }
 
+    /**
+     * Inits toggling system and show system system events
+     */
+
     static initSoftwareEvents() {
 
-        // For toggling system
+        // Event for toggling system
 
         let toggleables = $$('[data-toggleable]');
 
         for (let item of toggleables) {
+
             item.onclick = function (e) {
+
                 e.stopPropagation();
+
                 if (!this.parentElement.classList.contains('active')) {
+
                     item.nextElementSibling.style.height = item.nextElementSibling.scrollHeight + 'px';
+
                     this.parentElement.classList.add('active');
+
                     setTimeout(() => {
+
                         item.nextElementSibling.style.overflow = 'visible';
+
                         item.nextElementSibling.style.height = 'auto';
+
                     }, 300)
+
                 } else {
+
                     item.nextElementSibling.style.overflow = 'hidden';
+
                     item.nextElementSibling.style.height = item.nextElementSibling.scrollHeight + 'px';
+
                     setTimeout(() => {
+
                         item.nextElementSibling.style.height = '0px';
+
                     }, 50);
 
                     // Close inside opening items
 
                     if (item.nextElementSibling.querySelector('.active>[data-toggleable]')) {
+
                         item.nextElementSibling.querySelectorAll('.active>[data-toggleable]').forEach((itemToCLose) => {
+
                             itemToCLose.click()
+
                         })
                     }
+
                     this.parentElement.classList.remove('active');
+
                 }
 
             }
         }
 
-        // for showing software
+        // Event for showing software
 
         let that = this;
 
@@ -334,14 +440,18 @@ class PackContentManager {
                 let currentlyActiveSoft = null;
 
                 if (currentlyActiveSoft = $('.list-wrapper__item-software.active')) {
+
                     currentlyActiveSoft.classList.remove('active')
+
                 };
 
                 this.classList.add('active');
 
+                // Let's hide all cards
+
                 that.hideAllCards().then(async () => {
 
-                    // showing the soft
+                    // Let's show the software
 
                     that.showSoftware(softID).then(() => {
 
@@ -365,8 +475,13 @@ class PackContentManager {
 
     }
 
+    /**
+     * Inits static events which are related to the software menu
+     */
+
     static initStaticEvents() {
-        // for the search box
+
+        // Event for the search box
 
         let searchInterval;
 
@@ -410,7 +525,7 @@ class PackContentManager {
 
         };
 
-        // for os select
+        // Event for OS select box
 
         $('.osList').onchange = () => {
 
@@ -421,7 +536,9 @@ class PackContentManager {
                 let selectedOsValue = $('.osList').options[$('.osList').selectedIndex].value;
 
                 if (selectedOsValue == 1) {
+
                     selectedOsValue = null;
+
                 }
 
                 this.search(toSearch, selectedOsValue);
@@ -431,15 +548,31 @@ class PackContentManager {
 
     }
 
+    /**
+     * Shows a special card
+     * @param {String} cardClass - The class of the card which is going to be shawn
+     */
+
     static showSpecialCard(cardClass) {
+
+        // Let's hide all of the other cards
+
         this.hideAllCards().then(() => {
+
+            // Let's show the specific card
 
             $(`.${cardClass}`).classList.remove('none');
 
             $(`.${cardClass}`).classList.add('card-in');
 
         })
+
     }
+
+    /**
+     * Hides all of the cards
+     * @returns {Promise}
+     */
 
     static hideAllCards() {
 
@@ -464,20 +597,34 @@ class PackContentManager {
     }
 
     /**
-     * Shows software
+     * Shows a software
+     * @param {String} softID - The ID of the software which is going to be shawn
+     * @returns {Promise}
      */
 
     static showSoftware(softID) {
 
         return new Promise(async (resolve, reject) => {
 
+            // Let's get the details of the software
+
             let softInfo = await software.getById(softID);
+
+            // Let's set the details
+
+            // Let's set the BG
 
             $('.software-details__header').style.backgroundImage = `url('${softInfo.image}')`;
 
+            // Let's set the title
+
             $('.software-details__title').innerHTML = softInfo.title + ` ${softInfo.version}`;
 
+            // Let's set the OSes
+
             $('.software-details__OSes').innerHTML = 'OSes: ' + softInfo.oses.join(', ');
+
+            // Let's set the programAddress
 
             let programAddress;
 
@@ -489,6 +636,8 @@ class PackContentManager {
 
             $('.software-details__files-button').setAttribute('data-target', programAddress);
 
+            // Let's set the crack address
+
             if (softInfo.crack) {
                 $('.software-details__crack-button').classList.remove('none');
                 $('.software-details__crack-button').setAttribute('data-target', programAddress + '/' + softInfo.crack);
@@ -496,9 +645,11 @@ class PackContentManager {
                 $('.software-details__crack-button').classList.add('none');
             }
 
+            // Let's set the setup address
+
             $('.software-details__install-button').setAttribute('data-target', programAddress + '/' + softInfo.setup);
 
-            // for video
+            // Let's set the video address
 
             if (softInfo.video) {
                 $('.software-details__installation-video-wrapper').classList.remove('none');
@@ -507,7 +658,7 @@ class PackContentManager {
                 $('.software-details__installation-video-wrapper').classList.add('none');
             }
 
-            // for isRecommended
+            // For isRecommended
 
             if (softInfo.isRecommended) {
                 $('.software-details__suggested-icon').classList.remove('invisible');
@@ -515,9 +666,15 @@ class PackContentManager {
                 $('.software-details__suggested-icon').classList.add('invisible');
             }
 
+            // Let's set the farsi guide
+
             $('.software-details__installation-guide-content').innerHTML = softInfo.faGuide;
 
+            // Let's set the farsi description
+
             $('.software-details__description').innerHTML = softInfo.faDesc;
+
+            // We are done :-)
 
             resolve();
 
@@ -525,44 +682,88 @@ class PackContentManager {
 
     }
 
+    /**
+     * Shows more search section
+     */
+
     static showSearchDialog() {
+
         $('.list-wrapper:not(.list-wrapper--search)').classList.add('none');
+
         $('.list-wrapper--search').classList.remove('none');
+
     }
 
+    /**
+     * Hides more search section
+     */
+
     static hideSearchDialog() {
+
         let searchDialog = $('.list-wrapper--search');
+
         searchDialog.empty();
+
         searchDialog.classList.add('none');
+
         $('.list-wrapper:not(.list-wrapper--search)').classList.remove('none');
+
     }
+
+    /**
+     * Observes for DVD number change
+     */
 
     static observeForDVDChange() {
 
+        // Let's check the DVD number each 5 seconds
+
         setInterval(() => {
 
+            // If DVD changed....
+
             if (this.getCurrentDVD() != window.currentDVD) {
+
+                // Let's change the DVD inside application
+
                 this.changeDVD();
+
             }
 
         }, 5000)
 
     }
 
+    /**
+     * Gets current DVD number
+     */
+
     static getCurrentDVD() {
+
+        // Let's find the path of the autorun.ini
+
         let autorunFilePath = path.join(__dirname, '../../../../../../', 'autorun.ini');
+
+        // Check for existance
+
         if (fs.existsSync(autorunFilePath)) {
+
+            // Let's read the autorun.ini
 
             return parseInt(fs.readFileSync(autorunFilePath, 'utf8'));
 
 
         } else {
 
-            // file doesn't exists, probably dvd is out!
+            // File doesn't exists, probably dvd is out!
 
             return window.currentDVD;
         }
     }
+
+    /**
+     * Changes current DVD number on the software menu
+     */
 
     static changeDVD() {
 
@@ -586,13 +787,17 @@ class PackContentManager {
 
     }
 
+    /**
+     * Sets the current DVD number on the header and window variable
+     */
+
     static setCurrentDVD() {
 
-        // let's catch the current dvd number
+        // let's catch the current DVD number
 
         window.currentDVD = this.getCurrentDVD();
 
-        // let's change the dvd number text
+        // let's change the DVD number text
 
         $('.header__disk-number-wrapper').textContent = `Disk ${window.currentDVD}`;
 

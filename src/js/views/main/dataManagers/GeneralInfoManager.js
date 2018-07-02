@@ -4,9 +4,14 @@ const GeneralInfo = require('../../../models/GeneralInfo');
 
 const generalInfo = new GeneralInfo();
 
-//
+// GeneralInfoManager class handles events and datas related to the GeneralInfo
 
 class GeneralInfoManager{
+
+    /**
+     * Loads the GeneralInfos into proper elements
+     * @returns {Promise}
+     */
 
     static load(){
         return new Promise(async (resolve, reject) => {
@@ -37,5 +42,7 @@ class GeneralInfoManager{
     }
 
 }
+
+// Let's laod the GeneralInfos
 
 GeneralInfoManager.load();

@@ -4,17 +4,16 @@ const OS = require('../../../models/OS');
 
 const os = new OS();
 
-//
+// OSManager class handles events and datas related to the OSes
 
 class OSManager{
-    
-    constructor(){
 
-        this.load();
-
-    }
+    /**
+     * Loads the OSes in the proper elements
+     * @returns {Promise}
+     */
     
-    load(){
+    static load(){
 
         return new Promise(async(resolve, reject)=>{
 
@@ -34,4 +33,6 @@ class OSManager{
 
 }
 
-new OSManager();
+// Let's load the OSes
+
+OSManager.load();
