@@ -1,28 +1,42 @@
+// Models
+
 const DVD = require('../../../models/DVD');
 const Software = require('../../../models/Software');
 const Cat = require('../../../models/Cat');
 
-//
+// Instantiating
 
 const cat = new Cat();
+
 const software = new Software();
+
 const dvd = new DVD();
 
-//
+// NodeJS built-in modules
 
 const path = require('path');
 
 const fs = require('fs');
 
+// PackContentManager class handles events and datas which are realted to the packContent(DVDs, Cats and softwares)
+
 class PackContentManager {
+
+    /**
+     * Loads all of the DVDs, cats and softwares into the menu
+     * @returns {Promise}
+     */
 
     static async load() {
 
         return new Promise(async (resolve, reject) => {
             console.time("end");
-            // let's empty the menu
+
+            // Let's empty the menu
 
             $('.list-wrapper').empty();
+
+            // Let's get all of the DVDs
 
             let DVDs = await dvd.fetchAll('number', 1);
 
@@ -172,14 +186,6 @@ class PackContentManager {
 
                     let insideCatSoftwares = await software.getSoftwaresByCat(singleCat._id);
 
-                    if (OS) {
-                        insideCatSoftwares = await insideCatSoftwares.filter(soft => soft.oses.includes(OS));
-                    }
-
-                    if (insideCatSoftwares.length == 0) {
-                        continue;
-                    }
-
                     currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
                         <div class="list-wrapper__item-content" data-toggleable>
                         <i class="material-icons">
@@ -261,11 +267,6 @@ class PackContentManager {
                         </div>
                         </div>`);
 
-                }
-
-                // remove the dvd if it is empty
-                if (currDVDElem.querySelector('.list-wrapper__item-cat') == null) {
-                    $(`.list-wrapper.list-wrapper--search [data-dvd-number='${singleDVD.number}']`).parentNode.removeChild($(`.list-wrapper.list-wrapper--search [data-dvd-number='${singleDVD.number}']`));
                 }
 
             }
