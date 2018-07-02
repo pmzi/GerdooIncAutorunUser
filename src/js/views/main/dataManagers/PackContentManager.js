@@ -653,6 +653,10 @@ class PackContentManager {
 
             // Let's set the details
 
+            // Let's set the DVDNumber on the parent element
+
+            $('.software-details').setAttribute('data-DVDNumber', softInfo.DVDNumber);
+
             // Let's set the BG
 
             $('.software-details__header').style.backgroundImage = `url('${softInfo.image}')`;
@@ -797,6 +801,10 @@ class PackContentManager {
 
         if (fs.existsSync(autorunFilePath)) {
 
+            // DVD is available
+
+            window.DVDAvailable = true;
+
             // Let's read the autorun.ini
 
             return parseInt(fs.readFileSync(autorunFilePath, 'utf8'));
@@ -806,7 +814,9 @@ class PackContentManager {
 
             // File doesn't exists, probably dvd is out!
 
-            return window.currentDVD;
+            window.DVDAvailable = false;
+
+            return window.currentDVD ? window.currentDVD : 1;
         }
     }
 

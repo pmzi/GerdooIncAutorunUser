@@ -47,16 +47,48 @@ class Index {
 
         let that = this;
 
+        // Event for crack and files button
+
         $$('.software-details__files-button>i,.software-details__crack-button>i').forEach(item => {
             item.onclick = function () {
 
-                that.open(path.join(__dirname, '../../../', this.parentElement.getAttribute('data-target')));
+                let DVDNumber = $('.software-details').getAttribute('data-DVDNumber');
+
+                if (that.checkDVDNumber(DVDNumber)) {
+
+                    that.open(path.join(__dirname, '../../../', this.parentElement.getAttribute('data-target')));
+
+                } else {
+
+                    Snackbar.show({
+                        text: `دی وی دی شماره ${DVDNumber} را وارد نمایید.`,
+                        showAction: false,
+                        pos: 'top-right'
+                    });
+
+                }
 
             }
         })
 
+        // Event for install software button
+
         $('.software-details__install-button').onclick = function () {
-            that.open(path.join(__dirname, '../../../', this.getAttribute('data-target')));
+            let DVDNumber = $('.software-details').getAttribute('data-DVDNumber');
+
+            if (that.checkDVDNumber(DVDNumber)) {
+
+                that.open(path.join(__dirname, '../../../', this.getAttribute('data-target')));
+
+            } else {
+
+                Snackbar.show({
+                    text: `دی وی دی شماره ${DVDNumber} را وارد نمایید.`,
+                    showAction: false,
+                    pos: 'top-right'
+                });
+
+            }
         };
 
         // Event for closing the card
@@ -118,13 +150,13 @@ class Index {
 
         // Event for showing/hiding search ellipsis
 
-        $('.sidebar__header-pro-search-elipsis-btn').onclick = ()=>{
+        $('.sidebar__header-pro-search-elipsis-btn').onclick = () => {
 
             let target = $('.sidebar__header-pro-search-elipsis-content');
 
-            if(target.classList.contains('sidebar__ellipsis--show')){
+            if (target.classList.contains('sidebar__ellipsis--show')) {
 
-                $('.osList>option:first-of-type').setAttribute('selected','selected');
+                $('.osList>option:first-of-type').setAttribute('selected', 'selected');
 
                 $('.osList').trigger('toggledUp');
 
@@ -132,7 +164,7 @@ class Index {
 
                 $('.sidebar__header-pro-search-elipsis-btn>i').classList.remove('rotate');
 
-            }else{
+            } else {
 
                 $('.osList>option:first-of-type').removeAttribute('selected');
 
@@ -264,9 +296,17 @@ class Index {
      */
 
     static installAutorun() {
-        
-        this.open(path.join(__dirname,'../../setup/setup.exe'))
 
+        this.open(path.join(__dirname, '../../setup/setup.exe'))
+
+    }
+
+    static checkDVDNumber(DVDNumber){
+        if(window.DVDNumber == DVDNumber && window.DVDAvailable){
+            return true
+        }else{
+            return false;
+        }
     }
 
 }
