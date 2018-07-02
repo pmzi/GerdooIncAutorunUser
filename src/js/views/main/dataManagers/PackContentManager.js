@@ -1,11 +1,9 @@
 const DVD = require('../../../models/DVD');
 const Software = require('../../../models/Software');
 const Cat = require('../../../models/Cat');
-const GeneralInfo = require('../../../models/GeneralInfo');
 
 //
 
-const generalInfo = new GeneralInfo();
 const cat = new Cat();
 const software = new Software();
 const dvd = new DVD();
@@ -17,43 +15,8 @@ const path = require('path');
 const fs = require('fs');
 
 class PackContentManager {
-    constructor() {
-
-        this.setCurrentDVD();
-
-        // after page loads
-
-        document.addEventListener('DOMContentLoaded',()=>{
-
-            // let's show it with animation
-
-            $('.header__disk-number-wrapper').classList.add('come-out');
-
-        });
-
-        // loads the general contents
-        if(generalInfo.loaded){
-            this.loadGeneralContents();
-        }else{
-            console.log("here1")
-            generalInfo.afterLoaded = ()=>{
-                console.log("here")
-                this.loadGeneralContents();
-            }
-        }
-        console.log(generalInfo.loaded)
-
-        this.initStaticEvents();       
-
-        // loads the softwares
-
-        this.load();
-
-        this.observeForDVDChange();
-
-    }
-
-    async load() {
+    
+    static async load() {
 
         return new Promise(async (resolve, reject) => {
             console.time("end");
@@ -148,7 +111,7 @@ class PackContentManager {
 
     }
 
-    async search(toSearch, OS = null) {
+    static async search(toSearch, OS = null) {
 
         return new Promise(async (resolve, reject) => {
 
@@ -319,7 +282,7 @@ class PackContentManager {
 
     }
 
-    initSoftwareEvents() {
+    static initSoftwareEvents() {
 
         // For toggling system
 
@@ -400,7 +363,7 @@ class PackContentManager {
 
     }
 
-    initStaticEvents() {
+    static initStaticEvents() {
         // for the search box
 
         let searchInterval;
@@ -466,7 +429,7 @@ class PackContentManager {
 
     }
 
-    showSpecialCard(cardClass) {
+    static showSpecialCard(cardClass) {
         this.hideAllCards().then(() => {
 
             $(`.${cardClass}`).classList.remove('none');
@@ -476,7 +439,7 @@ class PackContentManager {
         })
     }
 
-    hideAllCards() {
+    static hideAllCards() {
 
         return new Promise((resolve, reject) => {
 
@@ -498,47 +461,17 @@ class PackContentManager {
 
     }
 
-    loadGeneralContents() {
-
-        return new Promise(async (resolve, reject) => {
-
-            let generalContents = (await generalInfo.fetchAll("_id", 1))[0];
-
-            // Loading the aboutUs
-
-            $('.about-gerdoo__content').innerHTML = generalContents.aboutUs;
-
-            // Loading the essentials
-
-            $('.essentials .page__content').innerHTML = generalContents.essentials;
-
-            // Loading optional tab
-
-            $('.optionalTabButton').textContent = generalContents.tabTitle;
-
-            $('.optionalTabButton').classList.remove('hidden');
-
-            $('.optionalTab .page__title').innerHTML = generalContents.tabTitle;
-
-            $('.optionalTab .page__content').innerHTML = generalContents.tabContent;
-
-            resolve();
-
-        });
-
-    }
-
     /**
      * Shows software
      */
 
-    showSoftware(softID) {
+    static showSoftware(softID) {
 
         return new Promise(async (resolve, reject) => {
 
             let softInfo = await software.getById(softID);
 
-            $('.software-details__header').style.backgroundImage = `url('../db/assets/${softInfo.image}')`;
+            $('.software-details__header').style.backgroundImage = `url('${softInfo.image}')`;
 
             $('.software-details__title').innerHTML = softInfo.title + ` ${softInfo.version}`;
 
@@ -590,19 +523,19 @@ class PackContentManager {
 
     }
 
-    showSearchDialog() {
+    static showSearchDialog() {
         $('.list-wrapper:not(.list-wrapper--search)').classList.add('none');
         $('.list-wrapper--search').classList.remove('none');
     }
 
-    hideSearchDialog() {
+    static hideSearchDialog() {
         let searchDialog = $('.list-wrapper--search');
         searchDialog.empty();
         searchDialog.classList.add('none');
         $('.list-wrapper:not(.list-wrapper--search)').classList.remove('none');
     }
 
-    observeForDVDChange(){
+    static observeForDVDChange(){
 
         setInterval(()=>{
 
@@ -614,28 +547,22 @@ class PackContentManager {
 
     }
 
-    getCurrentDVD(){
+    static getCurrentDVD(){
         let autorunFilePath = path.join(__dirname,'../../../../../../','autorun.ini');
         if(fs.existsSync(autorunFilePath)){
-
-            // hiding the possible loading
-
-            Loading.hide();
 
             return parseInt(fs.readFileSync(autorunFilePath, 'utf8'));
 
 
-        }else{// file doesn't exists, probably dvd is out!
+        }else{
             
-            // let's show the loading
-
-            Loading.show();
+            // file doesn't exists, probably dvd is out!
 
             return window.currentDVD;
         }
     }
 
-    changeDVD(){
+    static changeDVD(){
 
         $('.header__disk-number-wrapper').classList.remove('come-out');
 
@@ -657,7 +584,7 @@ class PackContentManager {
 
     }
 
-    setCurrentDVD(){
+    static setCurrentDVD(){
 
         // let's catch the current dvd number
 
@@ -671,4 +598,22 @@ class PackContentManager {
 
 }
 
-new PackContentManager();
+PackContentManager.setCurrentDVD();
+
+        // after page loads
+
+        document.addEventListener('DOMContentLoaded',()=>{
+
+            // let's show it with animation
+
+            $('.header__disk-number-wrapper').classList.add('come-out');
+
+        });
+
+        PackContentManager.initStaticEvents();       
+
+        // loads the softwares
+
+        PackContentManager.load();
+
+        PackContentManager.observeForDVDChange();
