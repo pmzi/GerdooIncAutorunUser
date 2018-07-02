@@ -231,11 +231,13 @@
                                 flex-grow: 1;
                     
                                 font-size: 1.4rem;
+
+                                overflow: hidden;
                     
                                 &>i{
         
                                     background-image: url($base-url + 'images/verfied.png');
-                                    width: 2rem;
+                                    min-width: 2rem;
                                     height: 2rem;
                                     background-size: 100% 100%;
 
@@ -245,6 +247,12 @@
                     
                                 &>span{
     
+                                    white-space: nowrap;
+
+                                    text-overflow: ellipsis;
+
+                                    overflow: hidden;
+
                                     color: white;
     
                                     padding-left: 1.5rem;

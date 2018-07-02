@@ -15,7 +15,7 @@ const path = require('path');
 const fs = require('fs');
 
 class PackContentManager {
-    
+
     static async load() {
 
         return new Promise(async (resolve, reject) => {
@@ -84,7 +84,7 @@ class PackContentManager {
 
                         let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
 
-                        currCatElem.append(`<div data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
+                        currCatElem.append(`<div title='${singleSoftware.title}' data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
                         <div class="list-wrapper__item-content">
                           ${verifiedLogo}
                           <span>
@@ -172,11 +172,11 @@ class PackContentManager {
 
                     let insideCatSoftwares = await software.getSoftwaresByCat(singleCat._id);
 
-                    if(OS){
-                        insideCatSoftwares = await insideCatSoftwares.filter(soft=>soft.oses.includes(OS));
+                    if (OS) {
+                        insideCatSoftwares = await insideCatSoftwares.filter(soft => soft.oses.includes(OS));
                     }
 
-                    if(insideCatSoftwares.length == 0){
+                    if (insideCatSoftwares.length == 0) {
                         continue;
                     }
 
@@ -204,7 +204,7 @@ class PackContentManager {
 
                         let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
 
-                        currCatElem.append(`<div data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
+                        currCatElem.append(`<div title='${singleSoftware.title}' data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
                         <div class="list-wrapper__item-content">
                           ${verifiedLogo}
                           <span>
@@ -264,7 +264,7 @@ class PackContentManager {
                 }
 
                 // remove the dvd if it is empty
-                if(currDVDElem.querySelector('.list-wrapper__item-cat') == null){
+                if (currDVDElem.querySelector('.list-wrapper__item-cat') == null) {
                     $(`.list-wrapper.list-wrapper--search [data-dvd-number='${singleDVD.number}']`).parentNode.removeChild($(`.list-wrapper.list-wrapper--search [data-dvd-number='${singleDVD.number}']`));
                 }
 
@@ -347,9 +347,9 @@ class PackContentManager {
                         if ($('.software-details__desc-button>i:last-of-type').classList.contains('active')) {
                             $('.software-details__desc-button').dispatchEvent(new Event('needsToggle'))
                         }
-    
+
                         $('.software-details__content-wrapper').style.height = $('.software-details__description').scrollHeight + 'px';
-    
+
                         $('.software-details').classList.remove('none');
                         $('.software-details').classList.add('card-in');
 
@@ -396,9 +396,9 @@ class PackContentManager {
 
                 let selectedOsValue = $('.osList').options[$('.osList').selectedIndex].value;
 
-                if(selectedOsValue == 1){
+                if (selectedOsValue == 1) {
                     os = null;
-                }else{
+                } else {
                     os = selectedOsValue;
                 }
 
@@ -410,15 +410,15 @@ class PackContentManager {
 
         // for os select
 
-        $('.osList').onchange = ()=>{
+        $('.osList').onchange = () => {
 
             let toSearch = $('.sidebar__header-searchbox-wrapper>.input__box').value.trim();
 
-            if(toSearch !== ''){
+            if (toSearch !== '') {
 
                 let selectedOsValue = $('.osList').options[$('.osList').selectedIndex].value;
 
-                if(selectedOsValue == 1){
+                if (selectedOsValue == 1) {
                     selectedOsValue = null;
                 }
 
@@ -485,7 +485,7 @@ class PackContentManager {
                 programAddress = (await cat.getById(softInfo.cat)).title + '/' + softInfo.title;
             }
 
-            $('.software-details__files-button').setAttribute('data-target', programAddress);            
+            $('.software-details__files-button').setAttribute('data-target', programAddress);
 
             if (softInfo.crack) {
                 $('.software-details__crack-button').classList.remove('none');
@@ -535,56 +535,56 @@ class PackContentManager {
         $('.list-wrapper:not(.list-wrapper--search)').classList.remove('none');
     }
 
-    static observeForDVDChange(){
+    static observeForDVDChange() {
 
-        setInterval(()=>{
+        setInterval(() => {
 
-            if(this.getCurrentDVD() != window.currentDVD){
+            if (this.getCurrentDVD() != window.currentDVD) {
                 this.changeDVD();
             }
 
-        },5000)
+        }, 5000)
 
     }
 
-    static getCurrentDVD(){
-        let autorunFilePath = path.join(__dirname,'../../../../../../','autorun.ini');
-        if(fs.existsSync(autorunFilePath)){
+    static getCurrentDVD() {
+        let autorunFilePath = path.join(__dirname, '../../../../../../', 'autorun.ini');
+        if (fs.existsSync(autorunFilePath)) {
 
             return parseInt(fs.readFileSync(autorunFilePath, 'utf8'));
 
 
-        }else{
-            
+        } else {
+
             // file doesn't exists, probably dvd is out!
 
             return window.currentDVD;
         }
     }
 
-    static changeDVD(){
+    static changeDVD() {
 
         $('.header__disk-number-wrapper').classList.remove('come-out');
 
         this.setCurrentDVD();
 
-        setTimeout(()=>{
+        setTimeout(() => {
             $('.header__disk-number-wrapper').classList.add('come-out');
-        },1000)
+        }, 1000)
 
         // Let's change the current dvd in software aside
 
-        $$('.list-wrapper__item-dvd.current').forEach(item=>{
+        $$('.list-wrapper__item-dvd.current').forEach(item => {
             item.classList.remove('current');
         })
 
-        $$(`.list-wrapper__item-dvd[data-dvd-number='${window.currentDVD}']`).forEach(item=>{
+        $$(`.list-wrapper__item-dvd[data-dvd-number='${window.currentDVD}']`).forEach(item => {
             item.classList.add('current');
         })
 
     }
 
-    static setCurrentDVD(){
+    static setCurrentDVD() {
 
         // let's catch the current dvd number
 
@@ -593,27 +593,27 @@ class PackContentManager {
         // let's change the dvd number text
 
         $('.header__disk-number-wrapper').textContent = `Disk ${window.currentDVD}`;
-        
+
     }
 
 }
 
 PackContentManager.setCurrentDVD();
 
-        // after page loads
+// after page loads
 
-        document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded', () => {
 
-            // let's show it with animation
+    // let's show it with animation
 
-            $('.header__disk-number-wrapper').classList.add('come-out');
+    $('.header__disk-number-wrapper').classList.add('come-out');
 
-        });
+});
 
-        PackContentManager.initStaticEvents();       
+PackContentManager.initStaticEvents();
 
-        // loads the softwares
+// loads the softwares
 
-        PackContentManager.load();
+PackContentManager.load();
 
-        PackContentManager.observeForDVDChange();
+PackContentManager.observeForDVDChange();
