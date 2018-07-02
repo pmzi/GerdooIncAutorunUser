@@ -80,7 +80,7 @@ class Software extends Model {
 
             if (OS !== null) {
                 query.oses = {
-                    $regex: new RegExp(OS, 'i')
+                    $regex: new RegExp(OS)
                 }
             }
 
@@ -96,6 +96,34 @@ class Software extends Model {
 
         });
     };
+
+    /**
+     * Counts softwares with the cat and OS given
+     * @param {String} cat - The cat id
+     * @param {String} OS - The OS id
+     * @returns {Promise}
+     */
+
+    countCatSoftwaresByOS(cat, OS) {
+        return new Promise((resolve, reject)=>{
+            this.db.count({
+                catId: cat,
+                OS: {
+                    $regex: new RegExp(OS)
+                }
+            },(err, result)=>{
+
+                if(err === null){
+
+                    resolve(result);
+
+                }
+
+                reject(err);
+                
+            })
+        })
+    }
 
 }
 

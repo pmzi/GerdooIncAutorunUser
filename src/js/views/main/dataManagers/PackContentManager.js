@@ -190,6 +190,29 @@ class PackContentManager {
                     continue;
                 }
 
+                // If any os specified
+
+                if(OS !== null){
+
+                    // Let's check whether each cat has any software that supports specified OS or not
+
+                    let shouldContinue = false;
+
+                    for(let singleCat of insideCats){
+                        if((await software.countCatSoftwaresByOS(singleCat._id, OS)) !== 0){
+                            // There is
+                            shouldContinue = true;
+                            break;
+                        }
+                    }
+
+                    if(!shouldContinue){
+                        // If there isn't any softwares that supports specified OS then contirnue
+                        continue;
+                    }
+
+                }
+
                 // Let's append the DVD item
 
                 let isCurrent = window.currentDVD == singleDVD.number ? 'current' : '';
@@ -254,6 +277,13 @@ class PackContentManager {
                     // Let's append each software of this cat
 
                     for (let singleSoftware of insideCatSoftwares) {
+
+                        // This happens when another search starts at the same time
+
+                        if(currCatElem === null){
+                            reject();
+                            return;
+                        }
 
                         // let's append software's element
 
@@ -327,6 +357,13 @@ class PackContentManager {
                     // Let's append the software
 
                     let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
+                    
+                    // This happens when another search starts at the same time
+
+                    if(currCatElem === null){
+                        reject();
+                        return;
+                    }
 
                     currCatElem.append(`<div data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
                         <div class="list-wrapper__item-content">
@@ -511,7 +548,9 @@ class PackContentManager {
                     os = selectedOsValue;
                 }
 
-                this.search(toSearch, os);
+                this.search(toSearch, os).catch(()=>{
+                    
+                })
 
             }, 1000);
 
@@ -533,7 +572,9 @@ class PackContentManager {
 
                 }
 
-                this.search(toSearch, selectedOsValue);
+                this.search(toSearch, selectedOsValue).catch(()=>{
+
+                })
 
             }
         };
