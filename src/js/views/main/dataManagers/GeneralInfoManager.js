@@ -1,8 +1,4 @@
-const GeneralInfo = require('../../../models/GeneralInfo');
-
-// Instantiation
-
-const generalInfo = new GeneralInfo();
+const generalInfo = window.generalInfo;
 
 // GeneralInfoManager class handles events and datas related to the GeneralInfo
 

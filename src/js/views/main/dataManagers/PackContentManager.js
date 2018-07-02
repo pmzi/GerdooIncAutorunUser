@@ -1,16 +1,8 @@
-// Models
+const cat = window.cat;
 
-const DVD = require('../../../models/DVD');
-const Software = require('../../../models/Software');
-const Cat = require('../../../models/Cat');
+const software = window.software;
 
-// Instantiating
-
-const cat = new Cat();
-
-const software = new Software();
-
-const dvd = new DVD();
+const dvd = window.dvd;
 
 // NodeJS built-in modules
 
@@ -622,7 +614,15 @@ class PackContentManager {
 
             // Let's set the OSes
 
-            $('.software-details__OSes').innerHTML = 'OSes: ' + softInfo.oses.join(', ');
+            let OSes = [];
+
+            for(let OSID of softInfo.oses){
+
+                OSes.push((await os.getById(OSID)).name);
+
+            }
+
+            $('.software-details__OSes').innerHTML = 'OSes: ' + OSes.join(', ');
 
             // Let's set the programAddress
 

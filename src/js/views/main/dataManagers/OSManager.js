@@ -1,8 +1,4 @@
-const OS = require('../../../models/OS');
-
-// Instantiation
-
-const os = new OS();
+const os = window.os;
 
 // OSManager class handles events and datas related to the OSes
 
@@ -29,6 +25,22 @@ class OSManager{
 
         })
 
+    }
+
+    /**
+     * Gets an OS by it's id
+     * @param {String} id - The id of the OS
+     * @returns {Promise}
+     */
+
+    static getById(id){
+        return new Promise(async (resolve, reject)=>{
+
+            let foundOS = os.getById(id);
+
+            resolve(foundOS)
+
+        })
     }
 
 }
