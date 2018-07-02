@@ -1,36 +1,33 @@
+// Electrn's utilities
+
 const {
     exec
 } = require('child_process');
 const {
     dialog
 } = require('electron').remote;
+
+// NodeJS built-in utilites
+
 const path = require('path');
+
 const fs = require('fs');
+
+// ncp package for copying directory and it's contents into a destionation
 
 const ncp = require('ncp').ncp;
 
+// Index class handles events and functionality of the index page
+
 class Index {
 
-    constructor() {
-
-        // check for music
-
-        if (localStorage.getItem('music') == 0) {
-            $('.musicButton>i').textContent = 'music_off'
-            $('audio').pause();
-        }
-
-        this.initEvents();
-
-    }
-
     /**
-     * Static events related to the index.html
+     * Inits static events related to the index.html
      */
 
-    initEvents() {
+    static initEvents() {
 
-        // for the switch between description and installation guide
+        // Event for the switch between description and installation guide
 
         $('.software-details__desc-button').onclick = () => {
 
@@ -62,19 +59,19 @@ class Index {
             that.open(path.join(__dirname, '../../../', this.getAttribute('data-target')));
         };
 
-        // for closing the card
+        // Event for closing the card
 
         $$('.software-details__close,.software-wrapper__info-wrapper').forEach(item => {
             item.onclick = () => {
 
-                // remove active software class
+                // Let's remove active software class
 
                 this.showSpecialCard('about-gerdoo');
 
             };
         })
 
-        // for showing the essentials
+        // Event for showing the essentials
 
         $('.essentialsButton').onclick = () => {
 
@@ -88,7 +85,7 @@ class Index {
 
         };
 
-        // for music
+        // Event for music off/on
 
         $('.musicButton').onclick = () => {
 
@@ -111,7 +108,7 @@ class Index {
             }
         };
 
-        // for install autorun button
+        // Event for install autorun button
 
         $('.autorunInstallButton').onclick = () => {
 
@@ -119,7 +116,7 @@ class Index {
 
         };
 
-        // for showing/hiding search ellipsis
+        // Event for showing/hiding search ellipsis
 
         $('.sidebar__header-pro-search-elipsis-btn').onclick = ()=>{
 
@@ -139,7 +136,12 @@ class Index {
 
     }
 
-    showSpecialCard(cardClass) {
+    /**
+     * Shows a special card
+     * @param {String} cardClass - The class of the card which is going to be shawn
+     */
+
+    static showSpecialCard(cardClass) {
         this.hideAllCards().then(() => {
 
             $(`.${cardClass}`).classList.remove('none');
@@ -149,7 +151,12 @@ class Index {
         })
     }
 
-    hideAllCards() {
+    /**
+     * Hides all of the cards
+     * @returns {Promise}
+     */
+
+    static hideAllCards() {
 
         return new Promise((resolve, reject) => {
 
@@ -175,13 +182,22 @@ class Index {
 
     }
 
-    open(address) {
+    /**
+     * Opens a specific address
+     * @param {String} address - The address of the file/folder which should be opened
+     */
+
+    static open(address) {
         exec(`start ${address}`, (err) => {
             console.log(err)
         });
     }
 
-    toggleSoftwareContent() {
+    /**
+     * Toggles between software description and installation guide
+     */
+
+    static toggleSoftwareContent() {
 
         // for toggling the button
 
@@ -235,12 +251,32 @@ class Index {
 
     }
 
-    installAutorun() {
-        console.log(path.join(__dirname,'../../setup/setup.exe'))
+    /**
+     * Opens the setup of the autorun
+     */
+
+    static installAutorun() {
+        
         this.open(path.join(__dirname,'../../setup/setup.exe'))
 
     }
 
 }
 
-new Index();
+// Checks whether music was turned off last time or not
+
+if (localStorage.getItem('music') == 0) {
+
+    // It has been turned off
+
+    // Let's now turn it off
+
+    $('.musicButton>i').textContent = 'music_off';
+
+    $('audio').pause();
+
+}
+
+// Let's initiate the events of the page
+
+Index.initEvents();
