@@ -16,7 +16,7 @@ class GeneralInfoManager{
 
             // Loading the aboutUs
 
-            $('.about-gerdoo__content').innerHTML = generalContents.aboutUs;
+            $('.about-gerdoo__content-gerdoo').innerHTML = generalContents.aboutUs;
 
             // Loading the essentials
 

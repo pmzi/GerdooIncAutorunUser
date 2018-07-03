@@ -61,6 +61,24 @@
 
             font-size: 1.4rem;
             line-height: 2.4rem;
+
+            &>.about-gerdoo__content-developers{
+
+                display: flex;
+
+                margin-top: 1rem;
+
+                align-items: center;
+                justify-content: center;
+
+                &>i{
+                    font-size: 1.8rem;
+
+                    margin-left: 0.5rem;
+                }
+
+            }
+
         }
 
     }
