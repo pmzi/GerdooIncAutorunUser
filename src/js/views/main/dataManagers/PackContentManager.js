@@ -10,6 +10,10 @@ const path = require('path');
 
 const fs = require('fs');
 
+// Some configs
+
+const config = require('../../../../config/config');
+
 // PackContentManager class handles events and datas which are realted to the packContent(DVDs, Cats and softwares)
 
 class PackContentManager {
@@ -708,7 +712,7 @@ class PackContentManager {
 
             if (softInfo.video) {
                 $('.software-details__installation-video-wrapper').classList.remove('none');
-                $('.software-details__installation-video-wrapper>video').setAttribute('src', programAddress + '/' + softInfo.video)
+                $('.software-details__installation-video-wrapper>video').setAttribute('src', config.rootPath + programAddress + '/' + softInfo.video)
             } else {
                 $('.software-details__installation-video-wrapper').classList.add('none');
             }
@@ -797,7 +801,7 @@ class PackContentManager {
 
         // Let's find the path of the autorun.ini
 
-        let autorunFilePath = path.join(__dirname, '../../../../../../', 'autorun.ini');
+        let autorunFilePath = config.rootPath + 'autorun.ini';
 
         // Check for existance
 

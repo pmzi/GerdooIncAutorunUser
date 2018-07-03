@@ -17,6 +17,10 @@ const fs = require('fs');
 
 const ncp = require('ncp').ncp;
 
+// Some configs
+
+const config = require('../config/config');
+
 // Index class handles events and functionality of the index page
 
 class Index {
@@ -56,7 +60,7 @@ class Index {
 
                 if (that.checkDVDNumber(DVDNumber)) {
 
-                    that.open(path.join(__dirname, '../../../', this.parentElement.getAttribute('data-target')));
+                    that.open(config.rootPath + this.parentElement.getAttribute('data-target'));
 
                 } else {
 
@@ -78,7 +82,7 @@ class Index {
 
             if (that.checkDVDNumber(DVDNumber)) {
 
-                that.open(path.join(__dirname, '../../../', this.getAttribute('data-target')));
+                that.open(config.rootPath + this.getAttribute('data-target'));
 
             } else {
 
@@ -228,7 +232,7 @@ class Index {
      */
 
     static open(address) {
-        exec(`start ${address}`, (err) => {
+        exec('start "" "'+address+'"' , (err) => {
             console.log(err)
         });
     }
@@ -297,12 +301,14 @@ class Index {
 
     static installAutorun() {
 
-        this.open(path.join(__dirname, '../../setup/setup.exe'))
+        this.open(config.rootPath + 'gerdooautorun/setup/setup.exe')
 
     }
 
     static checkDVDNumber(DVDNumber){
-        if(window.DVDNumber == DVDNumber && window.DVDAvailable){
+        console.log(window.currentDVD, DVDNumber, window.DVDAvailable)
+        if(window.currentDVD == DVDNumber && window.DVDAvailable){
+            
             return true
         }else{
             return false;
