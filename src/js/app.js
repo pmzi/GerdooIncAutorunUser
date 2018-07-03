@@ -1,4 +1,9 @@
 import { app, BrowserWindow } from 'electron';
+import { addBypassChecker } from 'electron-compile';
+
+addBypassChecker((filePath) => {
+  return filePath.indexOf(app.getAppPath()) === -1;
+});
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -22,7 +27,7 @@ const createWindow = () => {
   mainWindow.loadURL(`file://${__dirname}/../views/index.html`);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
