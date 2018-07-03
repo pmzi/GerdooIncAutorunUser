@@ -9,6 +9,7 @@
     z-index: 2;
     padding: 0px 10px;
 
+    box-shadow:         0px 0px 20px 0px rgba(50, 50, 50, 0.3);
     .header__logo-cont{
 
         flex-basis: 20rem;
@@ -51,9 +52,11 @@
             transform: translateX(-100%);
             transition-duration: 0.3s;
 
-            height: 3.5rem;
+            padding-top: 0.5rem;
+            height: 3.2rem;
+            font-size: 1.4rem;
             width: 9rem;
-            background-color: $primary-color;
+            background-image: linear-gradient(to right, #f7b859, #ffa824);
             position: absolute;
             right: 1rem;
             color: white;

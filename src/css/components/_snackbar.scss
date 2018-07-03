@@ -7,7 +7,7 @@
     font-family: 'behdad',Roboto, sans-serif;
     font-size: 14px;
     min-height: 14px;
-    background-color: #070b0e;
+    background-image: linear-gradient(to left, $primary-color, lighten($primary-color, 10));
     position: fixed;
     display: flex;
     justify-content: space-between;

@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
 
-    box-shadow: 4px 4px 5px 0px rgba(50, 50, 50, 0.3);
+    box-shadow: 4px 4px 5px 0px rgba(50, 50, 50, 0.06);
 
     z-index: 2;
 
@@ -23,7 +23,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin: 0.5rem 0;
+            margin-top: 1.5rem;
 
             .sidebar__header-pro-search-elipsis-btn{
 
@@ -32,6 +32,8 @@
                 align-items: center;
                 cursor: pointer;
                 color: $primary-color;
+
+                font-size: 1.2rem;
 
                 &>i{
 
@@ -98,7 +100,7 @@
 
         height: 0px;
 
-        background-color: whitesmoke;
+        background-color: #f7f7f7;
 
     }
 

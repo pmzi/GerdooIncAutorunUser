@@ -659,8 +659,10 @@ class PackContentManager {
 
             // Let's set the BG
 
-            $('.software-details__header').style.backgroundImage = `url('${softInfo.image}')`;
+            let gradient = window.getComputedStyle($('.software-details__header'), null).getPropertyValue('background-image');
 
+            $('.software-details__header').style.backgroundImage = `${gradient}, url('${softInfo.image}')`;
+            console.log($('.software-details__header').style.backgroundImage, `${gradient}, url('${softInfo.image}')`)
             // Let's set the title
 
             $('.software-details__title').innerHTML = softInfo.title + ` ${softInfo.version}`;
@@ -675,7 +677,7 @@ class PackContentManager {
 
             }
 
-            $('.software-details__OSes').innerHTML = 'OSes: ' + OSes.join(', ');
+            $('.software-details__OSes').innerHTML = 'OS: ' + OSes.join(', ');
 
             // Let's set the programAddress
 
@@ -870,9 +872,13 @@ PackContentManager.setCurrentDVD();
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // let's show it with animation
+    setTimeout(()=>{
 
-    $('.header__disk-number-wrapper').classList.add('come-out');
+        // let's show it with animation
+
+        $('.header__disk-number-wrapper').classList.add('come-out');
+
+    },1000)
 
 });
 

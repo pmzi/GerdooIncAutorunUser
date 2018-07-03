@@ -9,3 +9,8 @@ body {
 .highlight{
   color: $primary-color;
 }
+
+::selection{
+  color: white;
+  background-color: $primary-color;
+}
