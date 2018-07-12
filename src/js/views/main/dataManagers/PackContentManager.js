@@ -14,6 +14,8 @@ const fs = require('fs');
 
 const config = require('../../../../config/config');
 
+const drivelist = require('drivelist');
+
 // PackContentManager class handles events and datas which are realted to the packContent(DVDs, Cats and softwares)
 
 class PackContentManager {
@@ -141,6 +143,27 @@ class PackContentManager {
 
     }
 
+    static searchForRootPath() {
+
+        const drives = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+
+        for(let drive of drives){
+
+            if(fs.existsSync(drive+':')){
+                
+                if(fs.existsSync(
+                    path.join(drive+':','autorun.ini')
+                )){
+                    console.log(drive)
+                    config.rootPath = drive+':';
+                }
+
+            }
+
+        }
+
+    }
+
     /**
      * Searches the softwares
      * @param {String} toSearch - The string we are going to search with
@@ -198,21 +221,21 @@ class PackContentManager {
 
                 let shouldContinue = true;
 
-                if(OS !== null){
+                if (OS !== null) {
 
                     // Let's check whether each cat has any software that supports specified OS or not
 
                     shouldContinue = false;
 
-                    for(let singleCat of insideCats){
-                        if((await software.countCatSoftwaresByOS(singleCat._id, OS)) !== 0){
+                    for (let singleCat of insideCats) {
+                        if ((await software.countCatSoftwaresByOS(singleCat._id, OS)) !== 0) {
                             // There is
                             shouldContinue = true;
                             break;
                         }
                     }
 
-                    if(!shouldContinue && insideSoftwares.length == 0){
+                    if (!shouldContinue && insideSoftwares.length == 0) {
                         // If there isn't any softwares that supports specified OS then contirnue
                         continue;
                     }
@@ -252,19 +275,19 @@ class PackContentManager {
 
                 // Let's append softwares of each cat of this DVD
 
-                if(shouldContinue){
+                if (shouldContinue) {
                     for (let singleCat of insideCats) {
 
                         // Let's get the softwares which are inside this cat
-    
+
                         let insideCatSoftwares = await software.getSoftwaresByCat(singleCat._id);
 
-                        if(OS !== null){
-                            insideCatSoftwares = insideCatSoftwares.filter(soft=>soft.oses.includes(OS))
+                        if (OS !== null) {
+                            insideCatSoftwares = insideCatSoftwares.filter(soft => soft.oses.includes(OS))
                         }
-    
+
                         // Let's append the cat element
-    
+
                         currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
                             <div class="list-wrapper__item-content" data-toggleable>
                             <i class="material-icons">
@@ -280,26 +303,26 @@ class PackContentManager {
                             <div class='list-wrapper-item-software-cont'>
                             </div>
                         </div>`);
-    
+
                         // Let's get the current cat element
-                        
+
                         let currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleCat._id}']>.list-wrapper-item-software-cont`);
-    
+
                         // Let's append each software of this cat
-    
+
                         for (let singleSoftware of insideCatSoftwares) {
-    
+
                             // This happens when another search starts at the same time
-    
-                            if(currCatElem === null){
+
+                            if (currCatElem === null) {
                                 reject();
                                 return;
                             }
-    
+
                             // let's append software's element
-    
+
                             let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
-    
+
                             currCatElem.append(`<div title='${singleSoftware.title}' data-soft-id='${singleSoftware._id}' class="list-wrapper__item-software">
                             <div class="list-wrapper__item-content">
                               ${verifiedLogo}
@@ -308,9 +331,9 @@ class PackContentManager {
                               </span>
                             </div>
                           </div>`);
-    
+
                         }
-    
+
                     }
                 }
 
@@ -331,7 +354,7 @@ class PackContentManager {
                         // Yep! Let's select it
 
                         currCatElem = $(`.list-wrapper.list-wrapper--search .list-wrapper__item-cat[data-cat-id='${singleSoftware.cat}']>.list-wrapper-item-software-cont`);
-                    
+
                     } else {
 
                         // Let's get the information of the category o fthe current software
@@ -369,10 +392,10 @@ class PackContentManager {
                     // Let's append the software
 
                     let verifiedLogo = singleSoftware.isRecommended ? '<i></i>' : '';
-                    
+
                     // This happens when another search starts at the same time
 
-                    if(currCatElem === null){
+                    if (currCatElem === null) {
                         reject();
                         return;
                     }
@@ -503,7 +526,7 @@ class PackContentManager {
                         $('.software-details').classList.remove('none');
 
                         $('.software-details__content-wrapper').style.height = $('.software-details__description').scrollHeight + 'px';
-                        
+
                         $('.software-details').classList.add('card-in');
 
                     })
@@ -560,8 +583,8 @@ class PackContentManager {
                     os = selectedOsValue;
                 }
 
-                this.search(toSearch, os).catch(()=>{
-                    
+                this.search(toSearch, os).catch(() => {
+
                 })
 
             }, 1000);
@@ -584,7 +607,7 @@ class PackContentManager {
 
                 }
 
-                this.search(toSearch, selectedOsValue).catch(()=>{
+                this.search(toSearch, selectedOsValue).catch(() => {
 
                 })
 
@@ -675,7 +698,7 @@ class PackContentManager {
 
             let OSes = [];
 
-            for(let OSID of softInfo.oses){
+            for (let OSID of softInfo.oses) {
 
                 OSes.push((await os.getById(OSID)).name);
 
@@ -801,7 +824,7 @@ class PackContentManager {
 
         // Let's find the path of the autorun.ini
 
-        let autorunFilePath = config.rootPath + 'autorun.ini';
+        let autorunFilePath = path.join(config.rootPath, 'autorun.ini');
 
         // Check for existance
 
@@ -868,6 +891,19 @@ class PackContentManager {
 
     }
 
+    /**
+     * hides the install autorun button
+     */
+
+    static hideInstallAutorun(){
+        $('.autorunInstallButton').classList.add('none');
+    }
+
+}
+
+if(config.isIntalled){
+    PackContentManager.searchForRootPath();
+    PackContentManager.hideInstallAutorun();
 }
 
 PackContentManager.setCurrentDVD();
@@ -876,13 +912,13 @@ PackContentManager.setCurrentDVD();
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    setTimeout(()=>{
+    setTimeout(() => {
 
         // let's show it with animation
 
         $('.header__disk-number-wrapper').classList.add('come-out');
 
-    },1000)
+    }, 1000)
 
 });
 
