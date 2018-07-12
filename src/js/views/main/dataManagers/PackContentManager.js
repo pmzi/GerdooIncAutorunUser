@@ -14,8 +14,6 @@ const fs = require('fs');
 
 const config = require('../../../../config/config');
 
-const drivelist = require('drivelist');
-
 // PackContentManager class handles events and datas which are realted to the packContent(DVDs, Cats and softwares)
 
 class PackContentManager {

@@ -2,7 +2,7 @@
   "name": "gerdooincautorunuser",
   "productName": "gerdooincautorunuser",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Gerdoo Autorun for User",
   "main": "src/js/app.js",
   "scripts": {
     "sass:compile": "node-sass src/css/main.scss src/css/main.css -w",
@@ -32,7 +32,8 @@
       },
       "electronPackagerConfig": {
         "packageManager": "npm",
-        "icon":"./src/images/logo.gif.ico"
+        "icon": "./src/images/logo.gif.ico",
+        "asar": true
       },
       "electronWinstallerConfig": {
         "name": "gerdooincautorunuser"
