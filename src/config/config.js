@@ -3,5 +3,5 @@ const fs = require('fs');
 
 module.exports = {
     rootPath: path.join(__dirname, '../../../../../'),
-    isIntalled: true
+    isIntalled: false
 }
