@@ -14,7 +14,6 @@
 </head>
 
 <body>
-
   <div id="wrapper">
 
     <audio class="none" src="../musics/1.mp3" loop autoplay></audio>
@@ -258,8 +257,12 @@
 
             <div class="software-details__installation-guide">
               <div class="software-details__installation-video-wrapper">
-                <video src="../videos/small.mp4" controls></video>
+                <div class="software-details__video-button button pmd-z-depth button--info button--medium">
+                  <i class="material-icons">videocam</i>
+                  <span>مشاهده فیلم راهنمای نصب</span>
+                </div>
               </div>
+              
               <div class="software-details__installation-guide-content">
 
               </div>
@@ -314,6 +317,11 @@
     <span class="loading__text">
       یکی از دیسک‌های گردو را داخل دستگاه خود وارد کنید.
     </span>
+  </div>
+
+  <div class="installation-guide-video-wrapper">
+    <i class="material-icons">close</i>
+    <video id="installation-guide-video" src="" controls></video>
   </div>
 
   <!-- scripts -->

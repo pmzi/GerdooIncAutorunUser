@@ -160,7 +160,7 @@ class Index {
 
             if (target.classList.contains('sidebar__ellipsis--show')) {
 
-                $('.osList>option:first-of-type').setAttribute('selected', 'selected');
+                $('.osList>option:first-of-type').selected = 'selected';
 
                 $('.osList').trigger('toggledUp');
 
@@ -176,6 +176,38 @@ class Index {
                 $('.sidebar__header-pro-search-elipsis-btn>i').classList.add('rotate');
             }
 
+        };
+
+        // Event fr showing installation guide video
+
+        $('.software-details__video-button').onclick = ()=>{
+
+            let DVDNumber = $('.software-details').getAttribute('data-DVDNumber');
+
+            if (!this.checkDVDNumber(DVDNumber)) {
+
+                Snackbar.show({
+                    text: `دی وی دی شماره ${DVDNumber} را وارد نمایید.`,
+                    showAction: false,
+                    pos: 'top-right'
+                });
+                
+                return;
+
+            }
+
+            $('audio').pause();
+            
+            $('.installation-guide-video-wrapper').classList.add('installation-guide-video-wrapper--show');
+            
+        };
+
+        $('.installation-guide-video-wrapper>i').onclick = ()=>{
+            
+            $('.installation-guide-video-wrapper').classList.remove('installation-guide-video-wrapper--show');
+
+            $('#installation-guide-video').pause();
+            
         };
 
     }
@@ -301,7 +333,9 @@ class Index {
 
     static installAutorun() {
 
-        this.open(config.rootPath + 'gerdooautorun/setup/setup.exe')
+        let setupPath = path.join(__dirname,'../../setup/setup.exe');
+
+        this.open(setupPath)
 
     }
 

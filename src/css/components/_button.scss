@@ -54,6 +54,18 @@
         
     }
 
+    &.button--medium{
+
+        width: 20rem;
+        height: 3.5rem;
+        font-size: 1.2rem;
+
+        &>i{
+            font-size: 2.0rem;
+        }
+        
+    }
+
     &.button--slider{
 
         padding: 0;

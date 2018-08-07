@@ -189,6 +189,8 @@ class PackContentManager {
 
             let softwares = await software.findClosest(toSearch, catIDs, OS);
 
+            console.log(softwares)
+
             // Let's get the searchWrapper element
 
             let searchWrapper = $('.list-wrapper.list-wrapper--search');
@@ -284,6 +286,10 @@ class PackContentManager {
                             insideCatSoftwares = insideCatSoftwares.filter(soft => soft.oses.includes(OS))
                         }
 
+                        if(insideCatSoftwares.length == 0){
+                            continue;
+                        }
+
                         // Let's append the cat element
 
                         currDVDElem.append(`<div data-cat-id='${singleCat._id}' class="list-wrapper__item-cat">
@@ -355,7 +361,7 @@ class PackContentManager {
 
                     } else {
 
-                        // Let's get the information of the category o fthe current software
+                        // Let's get the information of the category of the current software
 
                         let singleCat = await cat.getById(singleSoftware.cat);
 
@@ -557,7 +563,7 @@ class PackContentManager {
 
             toSearch = toSearch.trim();
 
-            if (toSearch === '') {
+            if (toSearch === '' && $('.osList').options[$('.osList').selectedIndex].value == 1) {
                 this.hideSearchDialog();
                 clearInterval(searchInterval)
                 return;
@@ -595,21 +601,27 @@ class PackContentManager {
 
             let toSearch = $('.sidebar__header-searchbox-wrapper>.input__box').value.trim();
 
-            if (toSearch !== '') {
+            let selectedOsValue = $('.osList').options[$('.osList').selectedIndex].value;
 
-                let selectedOsValue = $('.osList').options[$('.osList').selectedIndex].value;
+            if (selectedOsValue == 1) {
 
-                if (selectedOsValue == 1) {
-
-                    selectedOsValue = null;
-
-                }
-
-                this.search(toSearch, selectedOsValue).catch(() => {
-
-                })
+                selectedOsValue = null;
 
             }
+
+            if (toSearch === '' && selectedOsValue == null) {
+                this.hideSearchDialog();
+                return;
+            }
+
+            if ($('.list-wrapper--search').classList.contains('none')) {
+                this.showSearchDialog();
+            }
+
+            this.search(toSearch, selectedOsValue).catch(() => {
+
+            })
+
         });
 
     }
@@ -684,13 +696,18 @@ class PackContentManager {
 
             // Let's set the BG
 
-            let gradient = window.getComputedStyle($('.software-details__header'), null).getPropertyValue('background-image');
+            let gradient = 'linear-gradient(to top, rgba(97, 97, 97, 0.7), transparent 50%)';
+            
+            if(softInfo.image === null || softInfo.image.trim() == ''){
+                $('.software-details__header').style.backgroundImage = `${gradient}`;                
+            }else{
+                $('.software-details__header').style.backgroundImage = `${gradient}, url('${softInfo.image}')`;                
+            }
 
-            $('.software-details__header').style.backgroundImage = `${gradient}, url('${softInfo.image}')`;
-            console.log($('.software-details__header').style.backgroundImage, `${gradient}, url('${softInfo.image}')`)
+            
             // Let's set the title
 
-            $('.software-details__title').innerHTML = softInfo.title + ` ${softInfo.version}`;
+            $('.software-details__title').innerHTML = softInfo.title + ` ${softInfo.version ? softInfo.version : ""}`;
 
             // Let's set the OSes
 
@@ -702,7 +719,14 @@ class PackContentManager {
 
             }
 
-            $('.software-details__OSes').innerHTML = 'OS: ' + OSes.join(', ');
+            let OSText= 'OS: ' + OSes.slice(0,2).join(', ');
+
+            if(OSes.length > 2){
+                OSText += ` + ${OSes.length - 2} more`;
+            }
+
+            $('.software-details__OSes').innerHTML = OSText;
+            $('.software-details__OSes').setAttribute('data-text',OSes.join(', '));
 
             // Let's set the programAddress
 
@@ -733,7 +757,7 @@ class PackContentManager {
 
             if (softInfo.video) {
                 $('.software-details__installation-video-wrapper').classList.remove('none');
-                $('.software-details__installation-video-wrapper>video').setAttribute('src', config.rootPath + programAddress + '/' + softInfo.video)
+                $('#installation-guide-video').setAttribute('src', config.rootPath + programAddress + '/' + softInfo.video)
             } else {
                 $('.software-details__installation-video-wrapper').classList.add('none');
             }
@@ -870,6 +894,8 @@ class PackContentManager {
         $$(`.list-wrapper__item-dvd[data-dvd-number='${window.currentDVD}']`).forEach(item => {
             item.classList.add('current');
         })
+
+        $('#instalation-guide-video').load();
 
     }
 

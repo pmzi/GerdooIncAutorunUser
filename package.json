@@ -32,8 +32,7 @@
       },
       "electronPackagerConfig": {
         "packageManager": "npm",
-        "icon": "./src/images/logo.gif.ico",
-        "asar": true
+        "icon": "./src/images/logo.gif.ico"
       },
       "electronWinstallerConfig": {
         "name": "gerdooincautorunuser"
