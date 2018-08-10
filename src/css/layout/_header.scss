@@ -4,7 +4,10 @@
 
 .header{
 
-    grid-area: 1 / 1 / 2 / -1;
+    // grid-area: 1 / 1 / 2 / -1;
+
+    flex-basis: 7rem;
+
     display: flex;
     z-index: 2;
     padding: 0px 10px;

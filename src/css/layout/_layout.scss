@@ -4,14 +4,23 @@
 
 #wrapper{
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: [header-start] 7rem [header-end main-start] 1fr [main-end footer-start] 1.5rem [footer-end];
+    // display: grid;
+    // grid-template-columns: repeat(12, 1fr);
+    // grid-template-rows: [header-start] 7rem [header-end main-start] 1fr [main-end footer-start] 1.5rem [footer-end];
     height: 100%;
     position: absolute;
     top: 0px;
     left: 0px;
 
+    display: flex;
+    flex-direction: column;
+
     transition-duration: 0.3s;
 
+}
+
+.main-wrapper{
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
 }
